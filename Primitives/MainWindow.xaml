@@ -1,0 +1,81 @@
+﻿<Window x:Class="Primitives.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Primitives"
+        xmlns:hx="http://helix-toolkit.org/wpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.25*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TreeView Grid.Column="0">
+            <TreeViewItem Header="Геометрия" IsExpanded="True">
+                <TreeViewItem Header="Прямоугольники" IsExpanded="True">
+                    <TreeViewItem Header="Прямоугольник1"/>
+                    <TreeViewItem Header="Прямоугольник2"/>
+                </TreeViewItem>
+                <TreeViewItem Header="Полигоны" IsExpanded="True">
+                    <TreeViewItem Header="Полигон1"/>
+                    <TreeViewItem Header="Полигон2"/>
+                </TreeViewItem>
+            </TreeViewItem>
+        </TreeView>
+        <Grid Grid.Column="1" Panel.ZIndex="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition/>
+                <RowDefinition Height="0.1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="1.5*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" Margin="3 3 3 3" Background="AntiqueWhite">
+                <Button Width="30" Margin="3"/>
+                <Button Width="30" Margin="3"/>
+            </StackPanel>
+            <DataGrid Grid.Row="1" Grid.Column="4" Height="50" VerticalAlignment="Top" Margin="3"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Text="Координаты курсора" TextAlignment="Right" Margin="3 3 3 3" Background="AntiqueWhite"/>
+        </Grid>
+        <hx:HelixViewport3D Grid.Column="1">
+            <hx:HelixViewport3D.DefaultCamera>
+                <OrthographicCamera Position="0.5,0.5,5" />
+            </hx:HelixViewport3D.DefaultCamera>
+            <hx:HelixViewport3D.Children>
+                <ModelVisual3D>
+                    <ModelVisual3D.Content>
+                        <DirectionalLight Color="White" Direction="-1,-1,-2" />
+                    </ModelVisual3D.Content>
+                </ModelVisual3D>
+                <ModelVisual3D>
+                    <ModelVisual3D.Content>
+                        <GeometryModel3D>
+                            <GeometryModel3D.Geometry>
+                                <MeshGeometry3D Positions="0,0,0 1,0,0 0,1,0 1,1,0 
+                                                           0,0,0.5 1,0,0.5 0,1,0.5 1,1,0.5"
+                                      TriangleIndices="0,2,1 1,2,3 0,4,2 2,4,6 
+                                                       0,1,4 1,5,4 1,7,5 1,3,7
+                                                       4,5,6 7,6,5 2,6,3 3,6,7"/>
+                            </GeometryModel3D.Geometry>
+                            <GeometryModel3D.Material>
+                                <DiffuseMaterial Brush="Blue" />
+                            </GeometryModel3D.Material>
+                        </GeometryModel3D>
+                    </ModelVisual3D.Content>
+                    <hx:LinesVisual3D Points="0,-10,0 0,10,0" Thickness="1" Color="Blue"/>
+                    <hx:LinesVisual3D Points="-10,0,0 10,0,0" Thickness="1" Color="Red"/>
+                    <hx:LinesVisual3D Points="0,0,-10 0,0,10" Thickness="1" Color="Green"/>
+                    <hx:GridLinesVisual3D MajorDistance="1" MinorDistance="1" Thickness="0.01" />
+                    
+                </ModelVisual3D>
+            </hx:HelixViewport3D.Children>
+        </hx:HelixViewport3D>
+    </Grid>
+</Window>

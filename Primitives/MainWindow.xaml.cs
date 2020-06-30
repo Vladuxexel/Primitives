@@ -23,6 +23,7 @@ namespace Primitives
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowVM(Viewport);
         }
     }
 }

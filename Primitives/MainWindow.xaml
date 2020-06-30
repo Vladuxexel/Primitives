@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Primitives"
         xmlns:hx="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" WindowState="Maximized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*"/>
@@ -46,7 +46,7 @@
         </Grid>
         <hx:HelixViewport3D x:Name="Viewport" Grid.Column="1" CalculateCursorPosition="True">
             <hx:HelixViewport3D.DefaultCamera>
-                <OrthographicCamera Position="0.5,0.5,5" />
+                <OrthographicCamera Position="0.5,0.5,20" />
             </hx:HelixViewport3D.DefaultCamera>
             <hx:HelixViewport3D.Children>
                 <ModelVisual3D>

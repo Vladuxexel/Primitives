@@ -42,7 +42,7 @@
                 <Button Width="30" Margin="3"/>
             </StackPanel>
             <DataGrid Grid.Row="1" Grid.Column="4" Height="50" VerticalAlignment="Top" Margin="3"/>
-            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding ElementName=Viewport, Path=CurrentPosition}" TextAlignment="Right" Margin="3 3 3 3" Background="AntiqueWhite"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding ElementName=Viewport, Path=CursorOnConstructionPlanePosition}" TextAlignment="Right" Margin="3 3 3 3" Background="AntiqueWhite"/>
         </Grid>
         <hx:HelixViewport3D x:Name="Viewport" Grid.Column="1" CalculateCursorPosition="True">
             <hx:HelixViewport3D.InputBindings>
@@ -58,17 +58,7 @@
                     </ModelVisual3D.Content>
                 </ModelVisual3D>
                 <ModelVisual3D>
-                    <ModelVisual3D.Content>
-                        <GeometryModel3D>
-                            <GeometryModel3D.Geometry>
-                                <MeshGeometry3D Positions="-200,-200,0 -200,200,0 200,200,0 200,-200,0"
-                                                TriangleIndices="0,3,2 0,2,1"/>
-                            </GeometryModel3D.Geometry>
-                            <GeometryModel3D.Material>
-                                <DiffuseMaterial Brush="White" />
-                            </GeometryModel3D.Material>
-                        </GeometryModel3D>
-                    </ModelVisual3D.Content>
+                    
                 </ModelVisual3D>
                 <ModelVisual3D Content="{Binding Model}"/>
                 <ModelVisual3D>

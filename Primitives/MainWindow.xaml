@@ -57,18 +57,8 @@
                         <DirectionalLight Color="White" Direction="-1,-1,-2" />
                     </ModelVisual3D.Content>
                 </ModelVisual3D>
+                <ModelVisual3D Content="{Binding Model}" />
                 <ModelVisual3D>
-                    <ModelVisual3D.Content>
-                        <GeometryModel3D>
-                            <GeometryModel3D.Geometry>
-                                <MeshGeometry3D Positions="0,0,0 0,1,0  1,1,0 1,0,0"
-                                                TriangleIndices="3,2,1 3,1,0"/>
-                            </GeometryModel3D.Geometry>
-                            <GeometryModel3D.Material>
-                                <DiffuseMaterial Brush="Blue" />
-                            </GeometryModel3D.Material>
-                        </GeometryModel3D>
-                    </ModelVisual3D.Content>
                     <hx:LinesVisual3D Points="0,-10,0 0,10,0" Thickness="1" Color="Blue"/>
                     <hx:LinesVisual3D Points="-10,0,0 10,0,0" Thickness="1" Color="Red"/>
                     <hx:LinesVisual3D Points="0,0,-10 0,0,10" Thickness="1" Color="Green"/>

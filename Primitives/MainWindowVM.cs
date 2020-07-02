@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows;
 using SharpDX;
 using HelixToolkit.Wpf;
+using MVVM;
 
 namespace Primitives
 {
@@ -14,25 +15,21 @@ namespace Primitives
     {
         private HelixViewport3D viewport;
 
-        public double x, y;
-
-        public double X
-        {
-            get { return x; }
-            set { x = value; }
-        }
-
         public MainWindowVM(HelixViewport3D viewport)
         {
             this.viewport = viewport;
-            viewport.MouseDown += OnMouseClick;
         }
-
-        public Viewport MainViewport { get; set; }
-
-        public void OnMouseClick(object sender, MouseButtonEventArgs e)
+        private RelayCommand drawCommand;
+        public RelayCommand DrawCommand
         {
-            MessageBox.Show(viewport.CursorPosition.ToString());
+            get
+            {
+                return drawCommand ??
+                    (drawCommand = new RelayCommand(obj =>
+                    {
+                        MessageBox.Show(viewport.CursorPosition.ToString());
+                    }));
+            }
         }
     }
 }

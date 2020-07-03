@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:Primitives"
         xmlns:hx="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" WindowState="Maximized"
-        d:DataContext="{d:DesignInstance Type=local:MainWindowVM, IsDesignTimeCreatable=False}">
+        Title="MainWindow" WindowState="Maximized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*"/>

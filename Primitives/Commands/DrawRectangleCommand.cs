@@ -24,7 +24,7 @@ namespace Primitives
                 else if (clicks == 2)
                 {
                     tempCoordinates.Add(mainWindowVM.viewport.CursorOnConstructionPlanePosition.ToString());
-                    Rectangle.drawRectangle(tempCoordinates[0], tempCoordinates[1], mainWindowVM);
+                    new Rectangle(tempCoordinates[0], tempCoordinates[1], mainWindowVM);
                     tempCoordinates.Clear();
                     clicks = 0;
                     mainWindowVM.Model = mainWindowVM.modelGroup;

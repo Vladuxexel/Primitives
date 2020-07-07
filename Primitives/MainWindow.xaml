@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Primitives"
         xmlns:hx="http://helix-toolkit.org/wpf"
+        xmlns:hxd="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"
         Title="MainWindow" WindowState="Maximized">
     <Grid>
@@ -38,15 +39,15 @@
                 <ColumnDefinition Width="1.5*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" Margin="3 3 3 3" Background="AntiqueWhite">
-                <Button Width="30" Margin="3"  />
-                <Button Width="30" Margin="3"/>
+                <Button Margin="3" Command="{Binding RectangleButtonCommand}" CommandParameter="{Binding}" Content="Rectangle"/>
+                <Button Margin="3" Command="{Binding PolygonButtonCommand}" CommandParameter="{Binding}" Content="Polygon"/>
             </StackPanel>
             <DataGrid Grid.Row="1" Grid.Column="4" Height="50" VerticalAlignment="Top" Margin="3"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding ElementName=Viewport, Path=CursorOnConstructionPlanePosition}" TextAlignment="Right" Margin="3 3 3 3" Background="AntiqueWhite"/>
         </Grid>
         <hx:HelixViewport3D x:Name="Viewport" Grid.Column="1" CalculateCursorPosition="True">
             <hx:HelixViewport3D.InputBindings>
-                <MouseBinding Gesture="LeftClick" Command="{Binding DrawRectangleCommand}" CommandParameter="{Binding}"/>
+                <MouseBinding Gesture="LeftClick" Command="{Binding DrawCommand}" CommandParameter="{Binding}"/>
             </hx:HelixViewport3D.InputBindings>
             <hx:HelixViewport3D.DefaultCamera>
                 <OrthographicCamera Position="0.5,0.5,20" />

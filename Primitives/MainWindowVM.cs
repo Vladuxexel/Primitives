@@ -20,12 +20,12 @@ namespace Primitives
     class MainWindowVM : INotifyPropertyChanged
     {
         MeshGeometry3D side1Plane = new MeshGeometry3D();
-        ObservableCollection<Rectangle> rectangles = new ObservableCollection<Rectangle>();
+       // ObservableCollection<Rectangle> rectangles = new ObservableCollection<Rectangle>();
 
         public int clicks = 0;
         public bool isRectangle = false;
         public bool isPolygon = false;
-        public readonly List<string> tempCoordinates = new List<string>();
+        public readonly List<Point3D> tempCoordinates = new List<Point3D>();
 
         public MainWindowVM(HelixViewport3D viewport)
         {
@@ -33,8 +33,27 @@ namespace Primitives
             RectangleButtonCommand = new RectangleButtonCommand();
             PolygonButtonCommand = new PolygonButtonCommand();
             this.viewport = viewport;
-            rectangles.Add(new Rectangle("-18;7;0", "-7;1;0", this));
+            //rectangles.Add(new Rectangle());
             Model = modelGroup;
+            viewport.MouseDoubleClick += Viewport_MouseDoubleClick;
+        }
+
+        private void Viewport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var result = viewport.Viewport.FindHits(e.GetPosition(viewport));
+
+            foreach (var elem in viewport.Children.OfType<Rectangle>())
+            {
+                elem.IsSelected = false;
+            }
+
+            if (result.Any())
+            {
+                if (result.First().Visual is Rectangle geom)
+                {
+                    geom.IsSelected = true;
+                }
+            }
         }
 
         // Create a model group
@@ -43,6 +62,7 @@ namespace Primitives
         public HelixViewport3D viewport;
 
         #region Commands definitions
+
         public RectangleButtonCommand RectangleButtonCommand { get; }
         public PolygonButtonCommand PolygonButtonCommand { get; }
         public DrawCommand DrawCommand { get; }

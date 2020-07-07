@@ -8,51 +8,77 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using SharpDX;
+using Color = System.Windows.Media.Color;
 
 namespace Primitives
 {
-    class Rectangle : INotifyPropertyChanged
+    class Rectangle : LinesVisual3D,  INotifyPropertyChanged
     {
         private double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;//Координаты вершин
         double xc, yc, zc;//Координаты центра
+        private Point3D _p1;
+        private Point3D _p2;
 
-        public Rectangle(string point1, string point2, MainWindowVM mainWindowVM)
+        private bool _isSelected;
+        private Color _brush = Colors.Green;
+
+        public bool IsSelected
         {
-            x1 = Calculator.getCoordinate('X', point1);
-            y1 = Calculator.getCoordinate('Y', point1);
-            z1 = Calculator.getCoordinate('Z', point1);
-            x3 = Calculator.getCoordinate('X', point2);
-            y3 = Calculator.getCoordinate('Y', point2);
-            z3 = Calculator.getCoordinate('Z', point2);
-            x2 = x3; y2 = y3; z2 = z3; x4 = x1; y4 = y1; z4 = z1;
-            drawRectangle(point1, point2, mainWindowVM);
+            get { return _isSelected;}
+            set
+            {
+                _isSelected = value;
+                SetSelectedColor();
+            }
         }
 
-        private static void drawRectangle(string point1, string point2, MainWindowVM mainWindowVM)
+        private void SetSelectedColor()
         {
-            double x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
-
-            x1 = Calculator.getCoordinate('X', point1);
-            x3 = Calculator.getCoordinate('X', point2);
-            y1 = Calculator.getCoordinate('Y', point1);
-            y3 = Calculator.getCoordinate('Y', point2);
-            z1 = Calculator.getCoordinate('Z', point1);
-            z3 = Calculator.getCoordinate('Z', point2);
-
-            // Create a mesh builder and add a box to it
-            var meshBuilder = new MeshBuilder(false, false);
-            meshBuilder.AddBox(new Point3D((x1 + x3) / 2, (y1 + y3) / 2, (z1 + z3) / 2), (x3 - x1), (y3 - y1), (z3 - z1));
-
-            // Create a mesh from the builder (and freeze it)
-            var mesh = meshBuilder.ToMesh(true);
-
-            // Create some materials
-            var greenMaterial = MaterialHelper.CreateMaterial(Colors.Green);
-
-            // Add 3 models to the group (using the same mesh, that's why we had to freeze it)
-            mainWindowVM.modelGroup.Children.Add(new GeometryModel3D { Geometry = mesh, Material = greenMaterial });
+            if (_isSelected)
+            {
+                _brush = Colors.Red;
+            }
+            else
+            {
+                _brush = Colors.Green;
+            }
+            this.UpdateGeometry();
         }
 
+        public Rectangle(Point3D point1, Point3D point2) 
+        {
+            _p1 = point1;
+            _p2 = point2;
+
+            Points.Add(point1);
+            Points.Add(point2);
+            Thickness = 5;
+            Color = _brush;
+        }
+
+        /*  protected override MeshGeometry3D Tessellate()
+          {
+              double x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
+
+              x1 = _p1.X;
+              x3 = _p2.X;
+              y1 = _p1.Y;
+              y3 = _p2.Y;
+              z1 = 1;
+              z3 = 1;
+              x2 = x3; y2 = y3; z2 = z3; x4 = x1; y4 = y1; z4 = z1;
+
+              // Create a mesh builder and add a box to it
+              var meshBuilder = new MeshBuilder(false, false);
+              meshBuilder.add(new Point3D((x1 + x3) / 2, (y1 + y3) / 2, (z1 + z3) / 2), (x3 - x1), (y3 - y1), (z3 - z1));
+
+
+              var ret = meshBuilder.ToMesh();
+              this.Material = new DiffuseMaterial(new SolidColorBrush(_brush)); 
+
+
+              return ret;
+          }*/
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {

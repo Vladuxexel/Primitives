@@ -12,7 +12,7 @@ using Color = System.Windows.Media.Color;
 
 namespace Primitives
 {
-    class Rectangle : LinesVisual3D,  INotifyPropertyChanged
+    class Rectangle : MeshElement3D,  INotifyPropertyChanged
     {
         private double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;//Координаты вершин
         double xc, yc, zc;//Координаты центра
@@ -42,43 +42,39 @@ namespace Primitives
             {
                 _brush = Colors.Green;
             }
-            this.UpdateGeometry();
+            this.UpdateModel();
         }
 
-        public Rectangle(Point3D point1, Point3D point2) 
+        public Rectangle(Point3D point1, Point3D point2)
         {
             _p1 = point1;
             _p2 = point2;
-
-            Points.Add(point1);
-            Points.Add(point2);
-            Thickness = 5;
-            Color = _brush;
         }
 
-        /*  protected override MeshGeometry3D Tessellate()
-          {
-              double x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
+        protected override MeshGeometry3D Tessellate()
+        {
+            double x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4;
+          
+            x1 = _p1.X;
+            x3 = _p2.X;
+            y1 = _p1.Y;
+            y3 = _p2.Y;
+            z1 = 1;
+            z3 = 1;
+            x2 = x3; y2 = y3; z2 = z3; x4 = x1; y4 = y1; z4 = z1;
 
-              x1 = _p1.X;
-              x3 = _p2.X;
-              y1 = _p1.Y;
-              y3 = _p2.Y;
-              z1 = 1;
-              z3 = 1;
-              x2 = x3; y2 = y3; z2 = z3; x4 = x1; y4 = y1; z4 = z1;
+            // Create a mesh builder and add a box to it
+            var meshBuilder = new MeshBuilder(false, false);
+            meshBuilder.AddBox(new Point3D((x1 + x3) / 2, (y1 + y3) / 2, (z1 + z3) / 2), (x3 - x1), (y3 - y1), (z3 - z1));
+           
 
-              // Create a mesh builder and add a box to it
-              var meshBuilder = new MeshBuilder(false, false);
-              meshBuilder.add(new Point3D((x1 + x3) / 2, (y1 + y3) / 2, (z1 + z3) / 2), (x3 - x1), (y3 - y1), (z3 - z1));
+            var ret = meshBuilder.ToMesh();
+            this.Material = new DiffuseMaterial(new SolidColorBrush(_brush)); 
 
 
-              var ret = meshBuilder.ToMesh();
-              this.Material = new DiffuseMaterial(new SolidColorBrush(_brush)); 
+            return ret;
+        }
 
-
-              return ret;
-          }*/
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {

@@ -13,13 +13,16 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Windows.Threading;
 using Primitives.Commands;
+using Color = SharpDX.Color;
+using SelectionCommand = HelixToolkit.Wpf.SelectionCommand;
 
 namespace Primitives
 {
     class MainWindowVM : INotifyPropertyChanged
     {
-        MeshGeometry3D side1Plane = new MeshGeometry3D();
        // ObservableCollection<Rectangle> rectangles = new ObservableCollection<Rectangle>();
 
         public int clicks = 0;
@@ -32,28 +35,12 @@ namespace Primitives
             DrawCommand = new DrawCommand();
             RectangleButtonCommand = new RectangleButtonCommand();
             PolygonButtonCommand = new PolygonButtonCommand();
+            SelectingCommand = new SelectingCommand();
             this.viewport = viewport;
+            var rect = new WireRectangle(new Point3D(-18,10,0), new Point3D(-3, 1, 0));
+            viewport.Children.Add(rect);
             //rectangles.Add(new Rectangle());
             Model = modelGroup;
-            viewport.MouseDoubleClick += Viewport_MouseDoubleClick;
-        }
-
-        private void Viewport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            var result = viewport.Viewport.FindHits(e.GetPosition(viewport));
-
-            foreach (var elem in viewport.Children.OfType<Rectangle>())
-            {
-                elem.IsSelected = false;
-            }
-
-            if (result.Any())
-            {
-                if (result.First().Visual is Rectangle geom)
-                {
-                    geom.IsSelected = true;
-                }
-            }
         }
 
         // Create a model group
@@ -66,6 +53,7 @@ namespace Primitives
         public RectangleButtonCommand RectangleButtonCommand { get; }
         public PolygonButtonCommand PolygonButtonCommand { get; }
         public DrawCommand DrawCommand { get; }
+        public SelectingCommand SelectingCommand { get; }
         #endregion
 
         Model3D model;

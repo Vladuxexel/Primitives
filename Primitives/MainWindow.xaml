@@ -48,6 +48,7 @@
         <hx:HelixViewport3D x:Name="Viewport" Grid.Column="1" CalculateCursorPosition="True">
             <hx:HelixViewport3D.InputBindings>
                 <MouseBinding Gesture="LeftClick" Command="{Binding DrawCommand}" CommandParameter="{Binding}"/>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SelectingCommand}" CommandParameter="{Binding}"/>
             </hx:HelixViewport3D.InputBindings>
             <hx:HelixViewport3D.DefaultCamera>
                 <OrthographicCamera Position="0.5,0.5,20" />

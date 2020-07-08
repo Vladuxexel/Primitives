@@ -22,7 +22,7 @@ namespace Primitives
                 else if (mainWindowVM.clicks == 2 && mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue)
                 {
                     mainWindowVM.tempCoordinates.Add(mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value);
-                    var rect = new Rectangle(mainWindowVM.tempCoordinates[0], mainWindowVM.tempCoordinates[1]);
+                    var rect = new WireRectangle(mainWindowVM.tempCoordinates[0], mainWindowVM.tempCoordinates[1]);
                     mainWindowVM.viewport.Children.Add(rect);
                     mainWindowVM.tempCoordinates.Clear();
                     mainWindowVM.clicks = 0;

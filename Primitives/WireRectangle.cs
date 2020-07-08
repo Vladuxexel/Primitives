@@ -15,42 +15,9 @@ namespace Primitives
 {
     public class WireRectangle : LinesVisual3D, INotifyPropertyChanged
     {
-
-        public ObservableCollection<ViewPropsVM> GetProps()
-        { 
-            return new ObservableCollection<ViewPropsVM>()
-            {
-                new ViewPropsVM("Ширина", value =>  Length = value, () => Length),
-                new ViewPropsVM("Высота", value =>  Width = value, () => Width)
-            };
-        } 
-
-
         private Point3D _p1, _p2, _p3, _p4;
         private bool _isSelected;
         private Color _brush = Colors.Green;
-
-        public double Length
-        {
-            get { return Calculator.GetDist(_p1, _p2); }
-            set { SetLength(value); }
-        }
-        public double Width
-        {
-            get { return Calculator.GetDist(_p1, _p4); }
-            set { SetWidth(value); }
-        }
-
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-            set
-            {
-                _isSelected = value;
-                SetSelectedColor();
-                OnPropertyChanged("IsSelected");
-            }
-        }
 
         public WireRectangle(Point3D point1, Point3D point3)
         {
@@ -72,6 +39,36 @@ namespace Primitives
             Color = _brush;
         }
 
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                SetSelectedColor();
+                OnPropertyChanged("IsSelected");
+            }
+        }
+
+        public ObservableCollection<ViewPropsVM> GetProps()
+        {
+            return new ObservableCollection<ViewPropsVM>()
+            {
+                new ViewPropsVM("Длина", value =>  Length = value, () => Length),
+                new ViewPropsVM("Ширина", value =>  Width = value, () => Width)
+            };
+        }
+
+        private double Length
+        {
+            get { return Calculator.GetDist(_p1, _p2); }
+            set { SetLength(value); }
+        }
+        private double Width
+        {
+            get { return Calculator.GetDist(_p1, _p4); }
+            set { SetWidth(value); }
+        }
         private void SetLength(double length)
         {
             double delta = 0;

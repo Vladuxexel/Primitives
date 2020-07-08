@@ -110,7 +110,7 @@
     <Compile Include="Commands\RectangleButtonCommand.cs" />
     <Compile Include="Commands\SelectionCommand.cs" />
     <Compile Include="MainWindowVM.cs" />
-    <Compile Include="ViewProps.cs" />
+    <Compile Include="ViewPropsVM.cs" />
     <Compile Include="WireRectangle.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="Commands\TypedCommand.cs" />

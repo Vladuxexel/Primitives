@@ -3,39 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 
 namespace Primitives
 {
     class Calculator
     {
-        public static double getCoordinate(char name, string str)
+        public static double GetDist(Point3D point1, Point3D point2)
         {
-            int index = 0;
-            double result = 0;
+            double x1 = point1.X;
+            double x2 = point2.X;
+            double y1 = point1.Y;
+            double y2 = point2.Y;
 
-            switch (name)
-            {
-                case 'X':
-                    index = str.IndexOf(';');
-                    str = str.Substring(0, index);
-                    result = Convert.ToDouble(str);
-                    break;
-                case 'Y':
-                    index = str.IndexOf(';');
-                    str = str.Substring(index + 1);
-                    index = str.IndexOf(';');
-                    str = str.Substring(0, index);
-                    result = Convert.ToDouble(str);
-                    break;
-                case 'Z':
-                    index = str.IndexOf(';');
-                    str = str.Substring(index + 1);
-                    index = str.IndexOf(';');
-                    str = str.Substring(index + 1);
-                    result = Convert.ToDouble(str);
-                    break;
-            }
-            return result;
+            x1 = Math.Pow((x2 - x1),2);
+            y1 = Math.Pow((y2 - y1), 2);
+
+            return Math.Sqrt(x1 + y1);
         }
     }
 }

@@ -23,8 +23,6 @@ namespace Primitives
 {
     class MainWindowVM : INotifyPropertyChanged
     {
-       // ObservableCollection<Rectangle> rectangles = new ObservableCollection<Rectangle>();
-
         public int clicks = 0;
         public bool isRectangle = false;
         public bool isPolygon = false;
@@ -39,8 +37,18 @@ namespace Primitives
             this.viewport = viewport;
             var rect = new WireRectangle(new Point3D(-18,10,0), new Point3D(-3, 1, 0));
             viewport.Children.Add(rect);
-            //rectangles.Add(new Rectangle());
             Model = modelGroup;
+        }
+
+        private ObservableCollection<ViewPropsVM> _props = new ObservableCollection<ViewPropsVM>();
+        public ObservableCollection<ViewPropsVM> Props
+        {
+            get => _props;
+            set
+            {
+                _props = value;
+                OnPropertyChanged(nameof(Props));
+            }
         }
 
         // Create a model group
@@ -49,7 +57,6 @@ namespace Primitives
         public HelixViewport3D viewport;
 
         #region Commands definitions
-
         public RectangleButtonCommand RectangleButtonCommand { get; }
         public PolygonButtonCommand PolygonButtonCommand { get; }
         public DrawCommand DrawCommand { get; }
@@ -57,6 +64,7 @@ namespace Primitives
         #endregion
 
         Model3D model;
+
         public Model3D Model
         {
             get

@@ -30,6 +30,7 @@ namespace Primitives.Commands
                 if (result.First().Visual is WireRectangle geom)
                 {
                     geom.IsSelected = true;
+                    mainWindowVM.Props = geom.GetProps();
                 }
             }
         }

@@ -111,8 +111,9 @@
     <Compile Include="Commands\SelectionCommand.cs" />
     <Compile Include="MainWindowVM.cs" />
     <Compile Include="ViewPropsVM.cs" />
-    <Compile Include="WireRectangle.cs" />
-    <Compile Include="Rectangle.cs" />
+    <Compile Include="Models\WirePolygon.cs" />
+    <Compile Include="Models\WireRectangle.cs" />
+    <Compile Include="Models\Rectangle.cs" />
     <Compile Include="Commands\TypedCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -166,5 +167,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

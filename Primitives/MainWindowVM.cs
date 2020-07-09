@@ -37,6 +37,14 @@ namespace Primitives
             this.viewport = viewport;
             var rect = new WireRectangle(new Point3D(-18,10,0), new Point3D(-3, 1, 0));
             viewport.Children.Add(rect);
+            tempCoordinates.Add(new Point3D(0,0,0));
+            tempCoordinates.Add(new Point3D(4, 4, 0));
+            tempCoordinates.Add(new Point3D(8, 0, 0));
+            tempCoordinates.Add(new Point3D(7, -5, 0));
+            tempCoordinates.Add(new Point3D(2, -5, 0));
+            var poly = new WirePolygon(tempCoordinates);
+            viewport.Children.Add(poly);
+            tempCoordinates.Clear();
             Model = modelGroup;
         }
 

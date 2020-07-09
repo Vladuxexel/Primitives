@@ -42,7 +42,12 @@
                 <Button Margin="3" Command="{Binding RectangleButtonCommand}" CommandParameter="{Binding}" Content="Rectangle"/>
                 <Button Margin="3" Command="{Binding PolygonButtonCommand}" CommandParameter="{Binding}" Content="Polygon"/>
             </StackPanel>
-            <DataGrid Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Props}" VerticalAlignment="Top" Margin="99,3,3,0" Grid.ColumnSpan="2"/>
+            <DataGrid Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Props}" VerticalAlignment="Top" Margin="99,3,3,0" Grid.ColumnSpan="2" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Параметр" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Значение" Binding="{Binding Value}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding ElementName=Viewport, Path=CursorOnConstructionPlanePosition}" TextAlignment="Right" Margin="3 3 3 3" Background="AntiqueWhite"/>
         </Grid>
         <hx:HelixViewport3D x:Name="Viewport" Grid.Column="1" CalculateCursorPosition="True">

@@ -25,13 +25,27 @@ namespace Primitives.Commands
                 elem.IsSelected = false;
             }
 
+            foreach (var elem in mainWindowVM.viewport.Children.OfType<WirePolygon>())
+            {
+                elem.IsSelected = false;
+            }
+
             if (result.Any())
             {
-                if (result.First().Visual is WireRectangle geom)
+                if (result.First().Visual is WireRectangle rect)
                 {
-                    geom.IsSelected = true;
-                    mainWindowVM.Props = geom.GetProps();
+                    rect.IsSelected = true;
+                    mainWindowVM.Props = rect.GetProps();
                 }
+                else if (result.First().Visual is WirePolygon poly)
+                {
+                    poly.IsSelected = true;
+                    mainWindowVM.Props = poly.GetProps();
+                }
+            }
+            else
+            {
+                mainWindowVM.Props = null;
             }
         }
     }

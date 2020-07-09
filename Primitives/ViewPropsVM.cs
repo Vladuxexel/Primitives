@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Primitives
 {
-    public class ViewPropsVM
+    public class ViewPropsVM 
     {
         private readonly Action<double> _setter;
         private readonly Func<double> _getter;

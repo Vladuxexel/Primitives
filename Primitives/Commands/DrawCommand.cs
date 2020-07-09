@@ -12,6 +12,11 @@ namespace Primitives
     {
         protected override void Execute(MainWindowVM mainWindowVM)
         {
+            //если нет объекта то создать в зависимости от типа
+            //игнорим близкие точки на уровне базового объекта
+            //пихаем в объект точки пока он не врент флаг, того что он законил построение.
+
+
             mainWindowVM.clicks++;
             if (mainWindowVM.isRectangle)
             {
@@ -27,12 +32,35 @@ namespace Primitives
                     mainWindowVM.tempCoordinates.Clear();
                     mainWindowVM.clicks = 0;
                     mainWindowVM.Model = mainWindowVM.modelGroup;
-                    //rect.UpdateModel();
                 }
             }
             else if (mainWindowVM.isPolygon)
             {
-                MessageBox.Show("Polygon");
+                if (mainWindowVM.tempCoordinates.Count < 2 && mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue)
+                {
+                    mainWindowVM.tempCoordinates.Add(mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value);
+
+                    //if (mainWindowVM.tempCoordinates.Count == 2)
+                    //{
+                    //    WirePolygon.DrawLines(mainWindowVM.tempCoordinates);
+                    //}
+                }
+                else if (mainWindowVM.tempCoordinates.Count <= 2 && mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue)
+                {
+                    if (Calculator.IsInRadius(mainWindowVM.tempCoordinates[mainWindowVM.tempCoordinates.Count-1],mainWindowVM.tempCoordinates[0], 1))
+                    {
+                        mainWindowVM.tempCoordinates.RemoveAt(mainWindowVM.tempCoordinates.Count - 1);
+                        var poly = new WirePolygon(mainWindowVM.tempCoordinates);
+                        mainWindowVM.viewport.Children.Add(poly);
+                        mainWindowVM.tempCoordinates.Clear();
+                        mainWindowVM.clicks = 0;
+                        mainWindowVM.Model = mainWindowVM.modelGroup;
+                    }
+                    else
+                    {
+                        mainWindowVM.tempCoordinates.Add(mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value);
+                    }
+                }
             }
         }
     }

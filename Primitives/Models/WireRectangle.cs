@@ -54,7 +54,7 @@ namespace Primitives
         {
             return new ObservableCollection<ViewPropsVM>()
             {
-                new ViewPropsVM("Длина", value =>  Length = value, () => Length),
+                new ViewPropsVM("Длина", value=> Length = value, () => Length),
                 new ViewPropsVM("Ширина", value =>  Width = value, () => Width)
             };
         }

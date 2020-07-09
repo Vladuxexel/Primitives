@@ -13,7 +13,7 @@ using Color = System.Windows.Media.Color;
 
 namespace Primitives
 {
-    public class WirePolygon : LinesVisual3D, INotifyPropertyChanged
+    public class WirePolygon : BaseObject, INotifyPropertyChanged
     {
         private List<Point3D> _points;
         private bool _isSelected;

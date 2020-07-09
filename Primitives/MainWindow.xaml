@@ -55,6 +55,11 @@
                 <MouseBinding Gesture="LeftClick" Command="{Binding DrawCommand}" CommandParameter="{Binding}"/>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SelectingCommand}" CommandParameter="{Binding}"/>
             </hx:HelixViewport3D.InputBindings>
+            <hx:HelixViewport3D.Triggers>
+                <EventTrigger>
+
+                </EventTrigger>
+            </hx:HelixViewport3D.Triggers>
             <hx:HelixViewport3D.DefaultCamera>
                 <OrthographicCamera Position="0.5,0.5,20" />
             </hx:HelixViewport3D.DefaultCamera>

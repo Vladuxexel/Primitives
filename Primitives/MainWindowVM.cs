@@ -27,6 +27,7 @@ namespace Primitives
         public bool isRectangle = false;
         public bool isPolygon = false;
         public readonly List<Point3D> tempCoordinates = new List<Point3D>();
+        public BaseObject CurrentObject { get; set; }
 
         public MainWindowVM(HelixViewport3D viewport)
         {
@@ -35,7 +36,8 @@ namespace Primitives
             PolygonButtonCommand = new PolygonButtonCommand();
             SelectingCommand = new SelectingCommand();
             this.viewport = viewport;
-            var rect = new WireRectangle(new Point3D(-18,10,0), new Point3D(-3, 1, 0));
+            var rect = new WireRectangle(new Point3D(-18,10,0));
+            rect.AddPoint(new Point3D(0,0,0));
             viewport.Children.Add(rect);
             tempCoordinates.Add(new Point3D(0,0,0));
             tempCoordinates.Add(new Point3D(4, 4, 0));

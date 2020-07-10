@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using SharpDX;
@@ -18,36 +19,39 @@ namespace Primitives
         private List<Point3D> _points;
         private bool _isSelected;
         private Color _brush = Colors.Green;
+        private int number = 0;
 
         public WirePolygon(List<Point3D> points)
         {
             _points = points.ToList();
 
-            for (int i = 0; i <= _points.Count-2; i++)
+            for (int i = 0; i <= _points.Count - 2; i++)
             {
                 Points.Add(_points[i]);
-                Points.Add(_points[i+1]);
+                Points.Add(_points[i + 1]);
             }
 
-            Points.Add(_points[_points.Count-1]);
+            Points.Add(_points[_points.Count - 1]);
             Points.Add(_points[0]);
 
             Thickness = 5;
             Color = _brush;
+            Name = $"Полигон {number}";
+            number++;
         }
 
         public WirePolygon(Point3D point)
         {
             PointsList.Add(point);
-           // Points.Add(point);
             Thickness = 3;
             Color = _brush;
+            Name = $"Полигон {number}";
+            number++;
         }
 
         public override void UpdateLastPoint(Point3D point)
         {
             Points.Clear();
-            
 
             for (int i = 0; i <= PointsList.Count - 2; i++)
             {
@@ -56,16 +60,11 @@ namespace Primitives
             }
             Points.Add(PointsList.Last());
             Points.Add(point);
-
-            /* if (IsEndCreate)
-             {
-
-             }*/
         }
 
         public override bool IsEndCreate
         {
-            get => Calculator.IsInRadius(PointsList.Last(), PointsList.First(), 1);
+            get => Calculator.IsInRadius(PointsList.Last(), PointsList.First(), 0.1);
         }
 
         public override void AddPoint(Point3D point)

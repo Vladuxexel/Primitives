@@ -50,6 +50,17 @@ namespace Primitives
                         can = false;
                     }
                 }
+                else if (result.First().Visual is WirePolygon poly)
+                {
+                    if (mainWindowVM.CurrentObject is WirePolygon curPoly)
+                    {
+                        can = true;
+                    }
+                    else
+                    {
+                        can = false;
+                    }
+                }
             }
 
             return can && mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue;

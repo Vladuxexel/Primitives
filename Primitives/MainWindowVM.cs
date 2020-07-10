@@ -16,6 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Threading;
 using Primitives.Commands;
+using Primitives.Models;
 using Color = SharpDX.Color;
 using SelectionCommand = HelixToolkit.Wpf.SelectionCommand;
 
@@ -27,9 +28,10 @@ namespace Primitives
         public bool isPolygon = false;
         public readonly List<Point3D> tempCoordinates = new List<Point3D>();
         public BaseObject CurrentObject { get; set; }
-
+        public ViewportChildCollection Collection { get; set; }
         public MainWindowVM(HelixViewport3D viewport)
         {
+            Collection = new ViewportChildCollection(viewport);
             DrawCommand = new DrawCommand();
             RectangleButtonCommand = new RectangleButtonCommand();
             PolygonButtonCommand = new PolygonButtonCommand();
@@ -44,9 +46,9 @@ namespace Primitives
             tempCoordinates.Add(new Point3D(7, -5, 0));
             tempCoordinates.Add(new Point3D(2, -5, 0));
             var poly = new WirePolygon(tempCoordinates);
-            viewport.Children.Add(poly);
+            Collection.Add(poly);
+           // viewport.Children.Add(poly);
             tempCoordinates.Clear();
-            Model = modelGroup;
             viewport.MouseMove += ViewportOnMouseMove;
         }
 
@@ -70,10 +72,7 @@ namespace Primitives
             }
         }
 
-        // Create a model group
-        public Model3DGroup modelGroup = new Model3DGroup();
-
-        public HelixViewport3D viewport;
+        public readonly HelixViewport3D viewport;
 
         #region Commands definitions
         public RectangleButtonCommand RectangleButtonCommand { get; }
@@ -81,21 +80,6 @@ namespace Primitives
         public DrawCommand DrawCommand { get; }
         public SelectingCommand SelectingCommand { get; }
         #endregion
-
-        Model3D model;
-
-        public Model3D Model
-        {
-            get
-            {
-                return model;
-            }
-            set
-            {
-                model = value;
-                OnPropertyChanged("Model");
-            }
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

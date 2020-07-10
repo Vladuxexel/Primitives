@@ -18,6 +18,7 @@ namespace Primitives
         private Point3D p1, p2, p3, p4;
         private bool _isSelected;
         private Color _brush = Colors.Green;
+        private int number = 0;
 
         public WireRectangle(Point3D point1)
         {
@@ -25,6 +26,8 @@ namespace Primitives
             Points.Add(PointsList.First());
             Thickness = 3;
             Color = _brush;
+            Name = $"Прямоугольник {number}";
+            number++;
         }
 
         public override void UpdateLastPoint(Point3D point)

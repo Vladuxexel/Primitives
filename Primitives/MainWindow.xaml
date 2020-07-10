@@ -15,16 +15,11 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TreeView Grid.Column="0">
-            <TreeViewItem Header="Геометрия" IsExpanded="True">
-                <TreeViewItem Header="Прямоугольники" IsExpanded="True">
-                    <TreeViewItem Header="Прямоугольник1"/>
-                    <TreeViewItem Header="Прямоугольник2"/>
-                </TreeViewItem>
-                <TreeViewItem Header="Полигоны" IsExpanded="True">
-                    <TreeViewItem Header="Полигон1"/>
-                    <TreeViewItem Header="Полигон2"/>
-                </TreeViewItem>
-            </TreeViewItem>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Collection}">
+                    <TextBlock Text="{Binding Name}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
         <Grid Grid.Column="1" Panel.ZIndex="1">
             <Grid.RowDefinitions>

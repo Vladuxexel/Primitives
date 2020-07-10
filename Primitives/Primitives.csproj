@@ -111,6 +111,7 @@
     <Compile Include="Commands\RectangleButtonCommand.cs" />
     <Compile Include="Commands\SelectionCommand.cs" />
     <Compile Include="MainWindowVM.cs" />
+    <Compile Include="Models\ViewportChildCollection.cs" />
     <Compile Include="ViewPropsVM.cs" />
     <Compile Include="Models\WirePolygon.cs" />
     <Compile Include="Models\WireRectangle.cs" />

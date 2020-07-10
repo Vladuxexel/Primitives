@@ -23,7 +23,6 @@ namespace Primitives
 {
     class MainWindowVM : INotifyPropertyChanged
     {
-        public int clicks = 0;
         public bool isRectangle = false;
         public bool isPolygon = false;
         public readonly List<Point3D> tempCoordinates = new List<Point3D>();
@@ -48,6 +47,16 @@ namespace Primitives
             viewport.Children.Add(poly);
             tempCoordinates.Clear();
             Model = modelGroup;
+            viewport.MouseMove += ViewportOnMouseMove;
+        }
+
+        private void ViewportOnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (viewport.CursorOnConstructionPlanePosition.HasValue && CurrentObject != null)
+            {
+                var point = viewport.CursorOnConstructionPlanePosition.Value;
+                CurrentObject.UpdateLastPoint(point);
+            }
         }
 
         private ObservableCollection<ViewPropsVM> _props = new ObservableCollection<ViewPropsVM>();

@@ -15,7 +15,6 @@ namespace Primitives.Commands
         {
             Point mousePos = Mouse.GetPosition(mainWindowVM.viewport);
 
-            mainWindowVM.clicks = 0;
             mainWindowVM.tempCoordinates.Clear();
 
             var result = mainWindowVM.viewport.Viewport.FindHits(mousePos);

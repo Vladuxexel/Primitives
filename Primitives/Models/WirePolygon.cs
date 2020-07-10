@@ -23,17 +23,55 @@ namespace Primitives
         {
             _points = points.ToList();
 
-            for (int i = 0; i <= points.Count-2; i++)
+            for (int i = 0; i <= _points.Count-2; i++)
             {
-                Points.Add(points[i]);
-                Points.Add(points[i+1]);
+                Points.Add(_points[i]);
+                Points.Add(_points[i+1]);
             }
 
-            Points.Add(points[points.Count-1]);
-            Points.Add(points[0]);
+            Points.Add(_points[_points.Count-1]);
+            Points.Add(_points[0]);
 
             Thickness = 5;
             Color = _brush;
+        }
+
+        public WirePolygon(Point3D point)
+        {
+            PointsList.Add(point);
+           // Points.Add(point);
+            Thickness = 3;
+            Color = _brush;
+        }
+
+        public override void UpdateLastPoint(Point3D point)
+        {
+            Points.Clear();
+            
+
+            for (int i = 0; i <= PointsList.Count - 2; i++)
+            {
+                Points.Add(PointsList[i]);
+                Points.Add(PointsList[i + 1]);
+            }
+            Points.Add(PointsList.Last());
+            Points.Add(point);
+
+            /* if (IsEndCreate)
+             {
+
+             }*/
+        }
+
+        public override bool IsEndCreate
+        {
+            get => Calculator.IsInRadius(PointsList.Last(), PointsList.First(), 1);
+        }
+
+        public override void AddPoint(Point3D point)
+        {
+            PointsList.Add(point);
+            UpdateLastPoint(point);
         }
 
         public bool IsSelected
@@ -57,12 +95,7 @@ namespace Primitives
 
         private double Perimeter
         {
-            get { return Calculator.GetPerimeter(_points); }
-        }
-
-        public void DrawLines(List<Point3D> points)
-        {
-            
+            get { return Calculator.GetPerimeter(PointsList); }
         }
 
         private void SetSelectedColor()

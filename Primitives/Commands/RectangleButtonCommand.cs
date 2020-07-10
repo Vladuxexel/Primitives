@@ -10,7 +10,6 @@ namespace Primitives.Commands
     {
         protected override void Execute(MainWindowVM mainWindowVM)
         {
-            mainWindowVM.clicks = 0;
             mainWindowVM.isRectangle = true;
             mainWindowVM.isPolygon = false;
             mainWindowVM.tempCoordinates.Clear();

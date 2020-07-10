@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Primitives"
         xmlns:hx="http://helix-toolkit.org/wpf"
         xmlns:hxd="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="MainWindow" WindowState="Maximized">
     <Grid>
@@ -39,7 +40,7 @@
                 <ColumnDefinition Width="1.5*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" Margin="3 3 3 3" Background="AntiqueWhite">
-                <Button Margin="3" Command="{Binding RectangleButtonCommand}" CommandParameter="{Binding}" Content="Rectangle"/>
+                <Button Margin="3" Command="{Binding RectangleButtonCommand}" CommandParameter="{Binding}" Content="Rectangle" />
                 <Button Margin="3" Command="{Binding PolygonButtonCommand}" CommandParameter="{Binding}" Content="Polygon"/>
             </StackPanel>
             <DataGrid Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Props}" VerticalAlignment="Top" Margin="99,3,3,0" Grid.ColumnSpan="2" AutoGenerateColumns="False">
@@ -55,11 +56,6 @@
                 <MouseBinding Gesture="LeftClick" Command="{Binding DrawCommand}" CommandParameter="{Binding}"/>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SelectingCommand}" CommandParameter="{Binding}"/>
             </hx:HelixViewport3D.InputBindings>
-            <hx:HelixViewport3D.Triggers>
-                <EventTrigger>
-
-                </EventTrigger>
-            </hx:HelixViewport3D.Triggers>
             <hx:HelixViewport3D.DefaultCamera>
                 <OrthographicCamera Position="0.5,0.5,20" />
             </hx:HelixViewport3D.DefaultCamera>

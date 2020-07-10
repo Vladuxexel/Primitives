@@ -27,7 +27,7 @@ namespace Primitives
         {
             double result = 0;
 
-            for (int i = 0; i < points.Count-1; i++)
+            for (int i = 0; i < points.Count-2; i++)
             {
                 result += GetDist(points[i], points[i + 1]);
             }

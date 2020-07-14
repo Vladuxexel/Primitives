@@ -24,5 +24,6 @@ namespace Primitives
         public virtual void UpdateLastPoint(Point3D point) { }
 
         public abstract bool IsEndCreate { get; }
+        public abstract bool IsSelected { get; set; }
     }
 }

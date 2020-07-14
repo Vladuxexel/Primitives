@@ -14,12 +14,15 @@ using Color = System.Windows.Media.Color;
 
 namespace Primitives
 {
+    /// <summary>
+    /// Class representing a wire polygon object
+    /// </summary>
     public class WirePolygon : BaseObject, INotifyPropertyChanged
     {
         private List<Point3D> _points;
         private bool _isSelected;
         private Color _brush = Colors.Green;
-        private int number = 0;
+        private static int number = 0;
 
         public WirePolygon(List<Point3D> points)
         {
@@ -49,6 +52,10 @@ namespace Primitives
             number++;
         }
 
+        /// <summary>
+        /// Method that allows to redraw current object in runtime to get imagination of current second point's position
+        /// </summary>
+        /// <param name="point"></param>
         public override void UpdateLastPoint(Point3D point)
         {
             Points.Clear();
@@ -62,18 +69,28 @@ namespace Primitives
             Points.Add(point);
         }
 
+        /// <summary>
+        /// Returns is object ended creation or not
+        /// </summary>
         public override bool IsEndCreate
         {
             get => Calculator.IsInRadius(PointsList.Last(), PointsList.First(), 0.1);
         }
 
+        /// <summary>
+        /// Method that adds new point to list of object's points
+        /// </summary>
+        /// <param name="point"></param>
         public override void AddPoint(Point3D point)
         {
             PointsList.Add(point);
             UpdateLastPoint(point);
         }
 
-        public bool IsSelected
+        /// <summary>
+        /// Returns is object selected or not
+        /// </summary>
+        public override bool IsSelected
         {
             get { return _isSelected; }
             set
@@ -84,6 +101,10 @@ namespace Primitives
             }
         }
 
+        /// <summary>
+        /// Adding information about object's perimeter to datagrid
+        /// </summary>
+        /// <returns></returns>
         public ObservableCollection<ViewPropsVM> GetProps()
         {
             return new ObservableCollection<ViewPropsVM>()
@@ -97,6 +118,9 @@ namespace Primitives
             get { return Calculator.GetPerimeter(PointsList); }
         }
 
+        /// <summary>
+        /// Sets color of selected object
+        /// </summary>
         private void SetSelectedColor()
         {
             if (_isSelected)
@@ -107,7 +131,6 @@ namespace Primitives
             {
                 _brush = Colors.Green;
             }
-
             Color = _brush;
         }
 

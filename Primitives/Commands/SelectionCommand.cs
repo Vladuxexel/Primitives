@@ -19,12 +19,7 @@ namespace Primitives.Commands
 
             var result = mainWindowVM.viewport.Viewport.FindHits(mousePos);
 
-            foreach (var elem in mainWindowVM.viewport.Children.OfType<WireRectangle>())
-            {
-                elem.IsSelected = false;
-            }
-
-            foreach (var elem in mainWindowVM.viewport.Children.OfType<WirePolygon>())
+            foreach (var elem in mainWindowVM.viewport.Children.OfType<BaseObject>())
             {
                 elem.IsSelected = false;
             }

@@ -49,6 +49,72 @@ namespace Primitives
             Points.Add(_p1);
         }
 
+        public Point3D P1
+        {
+            get { return _p1; }
+            set
+            {
+                if (_p1.X!=value.X)
+                {
+                    Length = Math.Abs(_p1.X + Math.Abs(value.X));
+                }
+
+                if (_p1.Y!=value.Y)
+                {
+                    Width = _p1.Y - value.Y;
+                }
+            }
+        }
+        public Point3D P2
+        {
+            get { return _p2; }
+            set
+            {
+                if (_p2.X != value.X)
+                {
+                    Length = Math.Abs(_p1.X + Math.Abs(value.X));
+                }
+
+                if (_p2.Y != value.Y)
+                {
+                    Width = _p2.Y - value.Y;
+                }
+            }
+        }
+
+        public Point3D P3
+        {
+            get { return _p3; }
+            set
+            {
+                if (_p3.X != value.X)
+                {
+                    Length = Math.Abs(_p1.X + Math.Abs(value.X));
+                }
+
+                if (_p3.Y != value.Y)
+                {
+                    Width = _p3.Y - value.Y;
+                }
+            }
+        }
+
+        public Point3D P4
+        {
+            get { return _p4; }
+            set
+            {
+                if (_p4.X != value.X)
+                {
+                    Length = Math.Abs(_p1.X + Math.Abs(value.X));
+                }
+
+                if (_p4.Y != value.Y)
+                {
+                    Width = _p4.Y - value.Y;
+                }
+            }
+        }
 
         public override bool IsEndCreate
         {
@@ -61,7 +127,7 @@ namespace Primitives
             UpdateLastPoint(point);
         }
 
-        public bool IsSelected
+        public override bool IsSelected
         {
             get { return _isSelected; }
             set

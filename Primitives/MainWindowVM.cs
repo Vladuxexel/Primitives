@@ -50,7 +50,7 @@ namespace Primitives
             tempCoordinates.Clear();
             viewport.MouseMove += ViewportOnMouseMove;
 
-            var right = new RectangleManipulator(viewport)
+            var right = new RectangleManipulator(this)
             {
                 Direction = new Vector3D(1, 0, 0),
                 Color = Colors.Blue

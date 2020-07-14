@@ -109,10 +109,10 @@ namespace Primitives
         {
             if (_rect != null)
             {
-                Point3D point1 = _rect._p1;
-                Point3D point3 = _rect._p2;
-                Point3D point2 = _rect._p3;
-                Point3D point4 = _rect._p4;
+                Point3D point1 = _rect.P1;
+                Point3D point3 = _rect.P2;
+                Point3D point2 = _rect.P3;
+                Point3D point4 = _rect.P4;
 
                 var mesh = new MeshBuilder(false, false);
                 var p = new Point3D(point2.X, (point2.Y+point3.Y)/2, point1.Z);
@@ -124,11 +124,11 @@ namespace Primitives
             }
         }
 
-        private HelixViewport3D _viewport;
+        private MainWindowVM _mainWindowVM;
 
-        public RectangleManipulator(HelixViewport3D viewport)
+        public RectangleManipulator(MainWindowVM mainWindowVm)
         {
-            _viewport = viewport;
+            _mainWindowVM = mainWindowVm;
         }
 
         /// <summary>
@@ -193,14 +193,15 @@ namespace Primitives
                     this.lastPoint = this.ToLocal(nearestPoint.Value);
                 }
 
-                if (_viewport.CursorOnConstructionPlanePosition.HasValue)
+                if (_mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue)
                 {
-                    var point = _viewport.CursorOnConstructionPlanePosition.Value;
-                    Point3D tempPoint = _rect._p3;
-                    _rect.Points.RemoveAt(2);
+                    var point = _mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
+                    Point3D tempPoint = _rect.P3;
                     point.Y = tempPoint.Y;
+                    _rect.P3 = point;
+                    _rect.Points.RemoveAt(2);
                     _rect.UpdateLastPoint(point);
-                    //_rect.Length += point.X;
+                    _mainWindowVM.Props = _rect.GetProps();
                 }
             }
         }

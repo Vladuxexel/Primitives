@@ -5,24 +5,31 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Media3D;
+using HelixToolkit.Wpf;
 
 namespace Primitives
 {
+    /// <summary>
+    /// A class that represents math calculations
+    /// </summary>
     class Calculator
     {
+        /// <summary>
+        /// Returns a distance from point1 to point2
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <returns></returns>
         public static double GetDist(Point3D point1, Point3D point2)
         {
-            double x1 = point1.X;
-            double x2 = point2.X;
-            double y1 = point1.Y;
-            double y2 = point2.Y;
-
-            x1 = Math.Pow((x2 - x1),2);
-            y1 = Math.Pow((y2 - y1), 2);
-
-            return Math.Sqrt(x1 + y1);
+            return point1.DistanceTo(point2);
         }
 
+        /// <summary>
+        /// Returns perimeter of polygon represented as a list of points
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
         public static double GetPerimeter(List<Point3D> points)
         {
             double result = 0;
@@ -37,6 +44,13 @@ namespace Primitives
             return result;
         }
 
+        /// <summary>
+        /// Returns is point1 in radius with point2 or not
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <param name="radius"></param>
+        /// <returns></returns>
         public static bool IsInRadius(Point3D point1, Point3D point2, double radius)
         {
             if (GetDist(point1,point2)<=radius)

@@ -117,7 +117,6 @@
     <Compile Include="ViewPropsVM.cs" />
     <Compile Include="Models\WirePolygon.cs" />
     <Compile Include="Models\WireRectangle.cs" />
-    <Compile Include="Models\Rectangle.cs" />
     <Compile Include="Commands\TypedCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

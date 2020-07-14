@@ -61,9 +61,6 @@
                     </ModelVisual3D.Content>
                 </ModelVisual3D>
                 <ModelVisual3D>
-                </ModelVisual3D>
-                <ModelVisual3D Content="{Binding Model}"/>
-                <ModelVisual3D>
                     <hx:LinesVisual3D Points="0,-10,0 0,10,0" Thickness="1" Color="Blue"/>
                     <hx:LinesVisual3D Points="-10,0,0 10,0,0" Thickness="1" Color="Red"/>
                     <hx:LinesVisual3D Points="0,0,-10 0,0,10" Thickness="1" Color="Green"/>

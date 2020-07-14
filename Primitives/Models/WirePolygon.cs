@@ -19,7 +19,6 @@ namespace Primitives
     /// </summary>
     public class WirePolygon : BaseObject, INotifyPropertyChanged
     {
-        private List<Point3D> _points;
         private bool _isSelected;
         private Color _brush = Colors.Green;
         private static int number = 0;

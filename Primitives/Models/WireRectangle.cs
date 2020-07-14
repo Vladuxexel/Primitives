@@ -16,7 +16,7 @@ namespace Primitives
 {
     public class WireRectangle : BaseObject, INotifyPropertyChanged
     {
-        public Point3D _p1, _p2, _p3, _p4;
+        private Point3D _p1, _p2, _p3, _p4;
         private bool _isSelected;
         private Color _brush = Colors.Green;
         private readonly int number = 0;
@@ -49,6 +49,7 @@ namespace Primitives
             Points.Add(_p1);
         }
 
+
         public override bool IsEndCreate
         {
             get => PointsList.Count >= 2;
@@ -80,7 +81,7 @@ namespace Primitives
             };
         }
 
-        public double Length
+        private double Length
         {
             get
             {

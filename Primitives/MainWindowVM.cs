@@ -38,7 +38,7 @@ namespace Primitives
             SelectingCommand = new SelectingCommand();
             this.viewport = viewport;
             var rect = new WireRectangle(new Point3D(-18,10,0));
-            rect.AddPoint(new Point3D(0,0,0));
+            rect.AddPoint(new Point3D(-5,2,0));
             viewport.Children.Add(rect);
             tempCoordinates.Add(new Point3D(0,0,0));
             tempCoordinates.Add(new Point3D(4, 4, 0));
@@ -47,9 +47,16 @@ namespace Primitives
             tempCoordinates.Add(new Point3D(2, -5, 0));
             var poly = new WirePolygon(tempCoordinates);
             Collection.Add(poly);
-           // viewport.Children.Add(poly);
             tempCoordinates.Clear();
             viewport.MouseMove += ViewportOnMouseMove;
+
+            var right = new RectangleManipulator(viewport)
+            {
+                Direction = new Vector3D(1, 0, 0),
+                Color = Colors.Blue
+            };
+            right.Bind(rect);
+            viewport.Children.Add(right);
         }
 
         private void ViewportOnMouseMove(object sender, MouseEventArgs e)

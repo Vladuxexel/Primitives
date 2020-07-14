@@ -6,19 +6,20 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using SharpDX;
+using System.Windows.Shapes;
 using Color = System.Windows.Media.Color;
 
 namespace Primitives
 {
     public class WireRectangle : BaseObject, INotifyPropertyChanged
     {
-        private Point3D p1, p2, p3, p4;
+        public Point3D _p1, _p2, _p3, _p4;
         private bool _isSelected;
         private Color _brush = Colors.Green;
-        private int number = 0;
+        private readonly int number = 0;
 
         public WireRectangle(Point3D point1)
         {
@@ -33,19 +34,19 @@ namespace Primitives
         public override void UpdateLastPoint(Point3D point)
         {
             Points.Clear();
-            p1 = PointsList.First();
-            p3 = point;
-            p2 = new Point3D(p3.X, p1.Y, 0);
-            p4 = new Point3D(p1.X, p3.Y, 0);
-          
-            Points.Add(p1);
-            Points.Add(p2);
-            Points.Add(p2);
-            Points.Add(p3);
-            Points.Add(p3);
-            Points.Add(p4);
-            Points.Add(p4);
-            Points.Add(p1);
+            _p1 = PointsList.First();
+            _p3 = point;
+            _p2 = new Point3D(_p3.X, _p1.Y, 0);
+            _p4 = new Point3D(_p1.X, _p3.Y, 0);
+
+            Points.Add(_p1);
+            Points.Add(_p2);
+            Points.Add(_p2);
+            Points.Add(_p3);
+            Points.Add(_p3);
+            Points.Add(_p4);
+            Points.Add(_p4);
+            Points.Add(_p1);
         }
 
         public override bool IsEndCreate
@@ -79,14 +80,14 @@ namespace Primitives
             };
         }
 
-        private double Length
+        public double Length
         {
             get
             {
-                p1 = PointsList.First();
-                p3 = PointsList.Last();
-                p2 = new Point3D(p3.X, p1.Y, 0);
-                return Calculator.GetDist(p1, p2);
+                _p1 = PointsList.First();
+                _p3 = PointsList.Last();
+                _p2 = new Point3D(_p3.X, _p1.Y, 0);
+                return Calculator.GetDist(_p1, _p2);
             }
             set { SetLength(value); }
         }
@@ -94,13 +95,14 @@ namespace Primitives
         {
             get
             {
-                p1 = PointsList.First();
-                p3 = PointsList.Last();
-                p4 = new Point3D(p1.X, p3.Y, 0);
-                return Calculator.GetDist(p1, p4);
+                _p1 = PointsList.First();
+                _p3 = PointsList.Last();
+                _p4 = new Point3D(_p1.X, _p3.Y, 0);
+                return Calculator.GetDist(_p1, _p4);
             }
             set { SetWidth(value); }
         }
+
         private void SetLength(double length)
         {
             double delta = length - Length;
@@ -116,7 +118,7 @@ namespace Primitives
             double delta = width - Width;
             var point = PointsList.Last();
             PointsList.Remove(point);
-            point = new Point3D(point.X , point.Y - delta, point.Z);
+            point = new Point3D(point.X, point.Y - delta, point.Z);
             PointsList.Add(point);
 
             UpdateLastPoint(point);

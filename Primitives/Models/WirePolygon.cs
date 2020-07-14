@@ -23,18 +23,18 @@ namespace Primitives
 
         public WirePolygon(List<Point3D> points)
         {
-            _points = points.ToList();
+            PointsList = points.ToList(); 
 
-            for (int i = 0; i <= _points.Count - 2; i++)
+            for (int i = 0; i <= PointsList.Count - 2; i++)
             {
-                Points.Add(_points[i]);
-                Points.Add(_points[i + 1]);
+                Points.Add(PointsList[i]);
+                Points.Add(PointsList[i + 1]);
             }
 
-            Points.Add(_points[_points.Count - 1]);
-            Points.Add(_points[0]);
+            Points.Add(PointsList[PointsList.Count - 1]);
+            Points.Add(PointsList[0]);
 
-            Thickness = 5;
+            Thickness = 3;
             Color = _brush;
             Name = $"Полигон {number}";
             number++;

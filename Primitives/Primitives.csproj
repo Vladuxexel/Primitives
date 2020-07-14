@@ -103,6 +103,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Manipulator.cs" />
     <Compile Include="Models\BaseObject.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Calculator.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Commands\SelectionCommand.cs" />
     <Compile Include="MainWindowVM.cs" />
     <Compile Include="Models\ViewportChildCollection.cs" />
+    <Compile Include="RectangleManipulator.cs" />
     <Compile Include="ViewPropsVM.cs" />
     <Compile Include="Models\WirePolygon.cs" />
     <Compile Include="Models\WireRectangle.cs" />

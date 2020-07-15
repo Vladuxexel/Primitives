@@ -10,13 +10,32 @@ using HelixToolkit.Wpf;
 
 namespace Primitives
 {
+
+    enum Direction
+    {
+        Top,
+        Bottom,
+        Left,
+        Right,
+        Center,
+        TopLeft,
+        TopRight,
+        BottomRight,
+        BottomLeft
+    }
+
     class RectangleManipulator : Manipulator
     {
         /// <summary>
-        /// Identifies the <see cref="Diameter"/> dependency property.
+        /// The last point.
         /// </summary>
-        public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-            "Diameter", typeof(double), typeof(TranslateManipulator), new UIPropertyMetadata(0.2, UpdateGeometry));
+        private Point3D lastPoint;
+
+        private WireRectangle _rect;
+
+        private Direction _currentDirection;
+
+        #region MetaDirection
 
         /// <summary>
         /// Identifies the <see cref="Direction"/> dependency property.
@@ -26,36 +45,6 @@ namespace Primitives
             typeof(Vector3D),
             typeof(TranslateManipulator),
             new UIPropertyMetadata(UpdateGeometry));
-
-        /// <summary>
-        /// Identifies the <see cref="Length"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
-            "Length", typeof(double), typeof(TranslateManipulator), new UIPropertyMetadata(2.0, UpdateGeometry));
-
-        /// <summary>
-        /// The last point.
-        /// </summary>
-        private Point3D lastPoint;
-
-        private WireRectangle _rect;
-
-        /// <summary>
-        /// Gets or sets the diameter of the manipulator arrow.
-        /// </summary>
-        /// <value> The diameter. </value>
-        public double Diameter
-        {
-            get
-            {
-                return (double)this.GetValue(DiameterProperty);
-            }
-
-            set
-            {
-                this.SetValue(DiameterProperty, value);
-            }
-        }
 
         /// <summary>
         /// Gets or sets the direction of the translation.
@@ -74,22 +63,7 @@ namespace Primitives
             }
         }
 
-        /// <summary>
-        /// Gets or sets the length of the manipulator arrow.
-        /// </summary>
-        /// <value> The length. </value>
-        public double Length
-        {
-            get
-            {
-                return (double)this.GetValue(LengthProperty);
-            }
-
-            set
-            {
-                this.SetValue(LengthProperty, value);
-            }
-        }
+        #endregion
 
         public override void Bind(ModelVisual3D source)
         {
@@ -100,6 +74,7 @@ namespace Primitives
         public override void UnBind()
         {
             _rect = null;
+            Model = null;
         }
 
         /// <summary>
@@ -109,17 +84,35 @@ namespace Primitives
         {
             if (_rect != null)
             {
-                Point3D point1 = _rect.P1;
-                Point3D point3 = _rect.P2;
-                Point3D point2 = _rect.P3;
-                Point3D point4 = _rect.P4;
-
                 var mesh = new MeshBuilder(false, false);
-                var p = new Point3D(point2.X, (point2.Y+point3.Y)/2, point1.Z);
-                var d = new Vector3D(1, 0, 0);
-                d.Normalize();
-                var p1 = p + (d * Length);
-                mesh.AddArrow(p, p1, Diameter);
+                Point3D controlPoint;
+
+                controlPoint = new Point3D(_rect.Center.X, _rect.Top, 0);
+                mesh.AddBox(controlPoint, 0.3,0.3,0);
+                
+                controlPoint = new Point3D(_rect.Right, _rect.Center.Y, 0);
+                mesh.AddBox(controlPoint, 0.3, 0.3, 0);
+
+                controlPoint = new Point3D(_rect.Center.X, _rect.Bottom, 0);
+                mesh.AddBox(controlPoint, 0.3, 0.3, 0);
+
+                controlPoint = new Point3D(_rect.Left, _rect.Center.Y, 0);
+                mesh.AddBox(controlPoint, 0.3, 0.3, 0);
+
+                controlPoint = new Point3D(_rect.Center.X, _rect.Center.Y, 0);
+                mesh.AddEllipsoid(controlPoint,0.2,0.2,0);
+
+                controlPoint = new Point3D(_rect.Left, _rect.Top, 0);
+                mesh.AddEllipsoid(controlPoint, 0.1, 0.1, 0);
+
+                controlPoint = new Point3D(_rect.Right, _rect.Top, 0);
+                mesh.AddEllipsoid(controlPoint, 0.1, 0.1, 0);
+
+                controlPoint = new Point3D(_rect.Right, _rect.Bottom, 0);
+                mesh.AddEllipsoid(controlPoint, 0.1, 0.1, 0);
+
+                controlPoint = new Point3D(_rect.Left, _rect.Bottom, 0);
+                mesh.AddEllipsoid(controlPoint, 0.1, 0.1, 0);
                 Model.Geometry = mesh.ToMesh();
             }
         }
@@ -138,22 +131,45 @@ namespace Primitives
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            var direction = this.ToWorld(this.Direction);
 
-            var up = Vector3D.CrossProduct(this.Camera.LookDirection, direction);
-            var hitPlaneOrigin = this.ToWorld(this.Position);
-            this.HitPlaneNormal = Vector3D.CrossProduct(up, direction);
-            var p = e.GetPosition(this.ParentViewport);
+            var point = _mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
 
-            var np = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
-            if (np == null)
+            if (Calculator.IsInRadius(point, new Point3D(_rect.Left, _rect.Top, 0), 0.3))
             {
-                return;
+                _currentDirection = Primitives.Direction.TopLeft;
             }
-
-            var lp = this.ToLocal(np.Value);
-
-            this.lastPoint = lp;
+            else if (Calculator.IsInRadius(point, new Point3D(_rect.Right, _rect.Top, 0), 0.3))
+            {
+                _currentDirection = Primitives.Direction.TopRight;
+            }
+            else if (Calculator.IsInRadius(point, new Point3D(_rect.Right, _rect.Bottom, 0), 0.3))
+            {
+                _currentDirection = Primitives.Direction.BottomRight;
+            }
+            else if (Calculator.IsInRadius(point, new Point3D(_rect.Left, _rect.Bottom, 0), 0.3))
+            {
+                _currentDirection = Primitives.Direction.BottomLeft;
+            }
+            else if (Math.Abs(point.Y - _rect.Top) <= 0.3)
+            {
+                _currentDirection = Primitives.Direction.Top;
+            }
+            else if (Math.Abs(point.X - _rect.Right) <= 0.3)
+            {
+                _currentDirection = Primitives.Direction.Right;
+            }
+            else if (Math.Abs(point.Y - _rect.Bottom) <= 0.3)
+            {
+                _currentDirection = Primitives.Direction.Bottom;
+            }
+            else if (Math.Abs(point.X - _rect.Left) <= 0.3)
+            {
+                _currentDirection = Primitives.Direction.Left;
+            }
+            else if (Calculator.IsInRadius(point,_rect.Center,0.3))
+            {
+                _currentDirection = Primitives.Direction.Center;
+            }
             this.CaptureMouse();
         }
 
@@ -177,16 +193,6 @@ namespace Primitives
                 var delta = this.ToLocal(nearestPoint.Value) - this.lastPoint;
                 this.Value += Vector3D.DotProduct(delta, this.Direction);
 
-                if (this.TargetTransform != null)
-                {
-                    var translateTransform = new TranslateTransform3D(delta);
-                    this.TargetTransform = Transform3DHelper.CombineTransform(translateTransform, this.TargetTransform);
-                }
-                else
-                {
-                    this.Position += delta;
-                }
-
                 nearestPoint = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
                 if (nearestPoint != null)
                 {
@@ -196,13 +202,48 @@ namespace Primitives
                 if (_mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue)
                 {
                     var point = _mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
-                    Point3D tempPoint = _rect.P3;
-                    point.Y = tempPoint.Y;
-                    _rect.P3 = point;
-                    _rect.Points.RemoveAt(2);
-                    _rect.UpdateLastPoint(point);
+
+                    switch (_currentDirection)
+                    {
+                        case Primitives.Direction.Top:
+                            _rect.Top = point.Y;
+                            break;
+
+                        case Primitives.Direction.Right:
+                            _rect.Right = point.X;
+                            break;
+
+                        case Primitives.Direction.Bottom:
+                            _rect.Bottom = point.Y;
+                            break;
+
+                        case Primitives.Direction.Left:
+                            _rect.Left = point.X;
+                            break;
+
+                        case Primitives.Direction.Center:
+                            _rect.Center = point;
+                            break;
+
+                        case Primitives.Direction.TopLeft:
+                            _rect.TopLeft = point;
+                            break;
+
+                        case Primitives.Direction.TopRight:
+                            _rect.TopRight = point;
+                            break;
+
+                        case Primitives.Direction.BottomRight:
+                            _rect.BottomRight = point;
+                            break;
+
+                        case Primitives.Direction.BottomLeft:
+                            _rect.BottomLeft = point;
+                            break;
+                    }
                     _mainWindowVM.Props = _rect.GetProps();
                 }
+                UpdateGeometry();
             }
         }
 

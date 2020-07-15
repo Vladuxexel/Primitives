@@ -34,12 +34,12 @@ namespace Primitives
         {
             double result = 0;
 
-            for (int i = 0; i < points.Count-2; i++)
+            for (int i = 0; i < points.Count - 2; i++)
             {
                 result += GetDist(points[i], points[i + 1]);
             }
 
-            result += GetDist(points[0], points[points.Count-1]);
+            result += GetDist(points[0], points[points.Count - 1]);
 
             return result;
         }
@@ -53,7 +53,7 @@ namespace Primitives
         /// <returns></returns>
         public static bool IsInRadius(Point3D point1, Point3D point2, double radius)
         {
-            if (GetDist(point1,point2)<=radius)
+            if (GetDist(point1, point2) <= radius)
             {
                 return true;
             }

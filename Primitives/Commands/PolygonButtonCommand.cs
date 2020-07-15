@@ -10,8 +10,8 @@ namespace Primitives.Commands
     {
         protected override void Execute(MainWindowVM mainWindowVM)
         {
+            mainWindowVM.isPolygon = mainWindowVM.isPolygon ? mainWindowVM.isPolygon = false : mainWindowVM.isPolygon = true;
             mainWindowVM.isRectangle = false;
-            mainWindowVM.isPolygon = true;
             mainWindowVM.tempCoordinates.Clear();
         }
     }

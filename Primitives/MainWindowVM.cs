@@ -28,6 +28,9 @@ namespace Primitives
         public bool isPolygon = false;
         public readonly List<Point3D> tempCoordinates = new List<Point3D>();
         public BaseObject CurrentObject { get; set; }
+
+        public Manipulator CurrentManipulator { get; set; }
+
         public ViewportChildCollection Collection { get; set; }
         public MainWindowVM(HelixViewport3D viewport)
         {
@@ -49,14 +52,6 @@ namespace Primitives
             Collection.Add(poly);
             tempCoordinates.Clear();
             viewport.MouseMove += ViewportOnMouseMove;
-
-            var right = new RectangleManipulator(this)
-            {
-                Direction = new Vector3D(1, 0, 0),
-                Color = Colors.Blue
-            };
-            right.Bind(rect);
-            viewport.Children.Add(right);
         }
 
         private void ViewportOnMouseMove(object sender, MouseEventArgs e)

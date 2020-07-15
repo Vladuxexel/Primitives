@@ -16,15 +16,15 @@ namespace Primitives
 {
     public class WireRectangle : BaseObject, INotifyPropertyChanged
     {
-        private Point3D _p1, _p2, _p3, _p4;
+        private Point3D _p1, /*_p2,*/ _p3; /*_p4;*/
         private bool _isSelected;
         private Color _brush = Colors.Green;
         private readonly int number = 0;
+        private bool _isEndCreated;
 
         public WireRectangle(Point3D point1)
         {
-            PointsList.Add(point1);
-            Points.Add(PointsList.First());
+            _p1 = point1;
             Thickness = 3;
             Color = _brush;
             Name = $"Прямоугольник {number}";
@@ -34,96 +34,129 @@ namespace Primitives
         public override void UpdateLastPoint(Point3D point)
         {
             Points.Clear();
-            _p1 = PointsList.First();
-            _p3 = point;
-            _p2 = new Point3D(_p3.X, _p1.Y, 0);
-            _p4 = new Point3D(_p1.X, _p3.Y, 0);
+
+            var p3 = point;
+            var p2 = new Point3D(p3.X, _p1.Y, 0);
+            var p4 = new Point3D(_p1.X, p3.Y, 0);
 
             Points.Add(_p1);
-            Points.Add(_p2);
-            Points.Add(_p2);
-            Points.Add(_p3);
-            Points.Add(_p3);
-            Points.Add(_p4);
-            Points.Add(_p4);
+            Points.Add(p2);
+            Points.Add(p2);
+            Points.Add(p3);
+            Points.Add(p3);
+            Points.Add(p4);
+            Points.Add(p4);
             Points.Add(_p1);
         }
 
-        public Point3D P1
+        private void Update()
         {
-            get { return _p1; }
-            set
-            {
-                if (_p1.X!=value.X)
-                {
-                    Length = Math.Abs(_p1.X + Math.Abs(value.X));
-                }
-
-                if (_p1.Y!=value.Y)
-                {
-                    Width = _p1.Y - value.Y;
-                }
-            }
-        }
-        public Point3D P2
-        {
-            get { return _p2; }
-            set
-            {
-                if (_p2.X != value.X)
-                {
-                    Length = Math.Abs(_p1.X + Math.Abs(value.X));
-                }
-
-                if (_p2.Y != value.Y)
-                {
-                    Width = _p2.Y - value.Y;
-                }
-            }
+            UpdateLastPoint(_p3);
         }
 
-        public Point3D P3
+        public double Top
         {
-            get { return _p3; }
+            get => _p1.Y;
             set
             {
-                if (_p3.X != value.X)
-                {
-                    Length = Math.Abs(_p1.X + Math.Abs(value.X));
-                }
-
-                if (_p3.Y != value.Y)
-                {
-                    Width = _p3.Y - value.Y;
-                }
+                _p1 = new Point3D(_p1.X, value, _p1.Z);
+                Update();
+            }
+        }
+        public double Right
+        {
+            get => _p3.X;
+            set
+            {
+                _p3 = new Point3D(value, _p3.Y, _p3.Z);
+                Update();
+            }
+        }
+        public double Bottom
+        {
+            get => _p3.Y;
+            set
+            {
+                _p3 = new Point3D(_p3.X, value, _p3.Z);
+                Update();
+            }
+        }
+        public double Left
+        {
+            get => _p1.X;
+            set
+            {
+                _p1 = new Point3D(value, _p1.Y, _p1.Z);
+                Update();
             }
         }
 
-        public Point3D P4
+        public Point3D Center
         {
-            get { return _p4; }
+            get => new Point3D((_p1.X + _p3.X) / 2, (_p1.Y + _p3.Y) / 2, 0);
             set
             {
-                if (_p4.X != value.X)
-                {
-                    Length = Math.Abs(_p1.X + Math.Abs(value.X));
-                }
+                var deltaX = ((_p1.X + _p3.X) / 2) - value.X;
+                var deltaY = ((_p1.Y + _p3.Y) / 2) - value.Y;
 
-                if (_p4.Y != value.Y)
-                {
-                    Width = _p4.Y - value.Y;
-                }
+                _p1 = new Point3D(_p1.X - deltaX, _p1.Y - deltaY, 0);
+                _p3 = new Point3D(_p3.X - deltaX, _p3.Y - deltaY, 0);
+                Update();
+            }
+        }
+
+        public Point3D TopLeft
+        {
+            get => _p1;
+            set
+            {
+                _p1 = value;
+                Update();
+            }
+        }
+        public Point3D TopRight
+        {
+            get => new Point3D(_p3.X, _p1.Y, 0);
+            set
+            {
+                var deltaX = _p3.X - value.X;
+                var deltaY = _p1.Y - value.Y;
+                _p1 = new Point3D(_p1.X, _p1.Y - deltaY, 0);
+                _p3 = new Point3D(_p3.X - deltaX, _p3.Y, 0);
+                Update();
+            }
+        }
+        public Point3D BottomRight
+        {
+            get => _p3;
+            set
+            {
+                _p3 = value;
+                Update();
+            }
+        }
+        public Point3D BottomLeft
+        {
+            get => new Point3D(_p1.X, _p3.Y, 0);
+            set
+            {
+                var deltaX = _p1.X - value.X;
+                var deltaY = _p3.Y - value.Y;
+                _p1 = new Point3D(_p1.X - deltaX, _p1.Y, 0);
+                _p3 = new Point3D(_p3.X, _p3.Y - deltaY, 0);
+                Update();
             }
         }
 
         public override bool IsEndCreate
         {
-            get => PointsList.Count >= 2;
+            get => _isEndCreated;
         }
 
         public override void AddPoint(Point3D point)
         {
-            PointsList.Add(point);
+            _p3 = point;
+            _isEndCreated = true;
             UpdateLastPoint(point);
         }
 
@@ -151,10 +184,7 @@ namespace Primitives
         {
             get
             {
-                _p1 = PointsList.First();
-                _p3 = PointsList.Last();
-                _p2 = new Point3D(_p3.X, _p1.Y, 0);
-                return Calculator.GetDist(_p1, _p2);
+                return Calculator.GetDist(_p1, new Point3D(_p3.X, _p1.Y, _p1.Z));
             }
             set { SetLength(value); }
         }
@@ -162,10 +192,7 @@ namespace Primitives
         {
             get
             {
-                _p1 = PointsList.First();
-                _p3 = PointsList.Last();
-                _p4 = new Point3D(_p1.X, _p3.Y, 0);
-                return Calculator.GetDist(_p1, _p4);
+                return Calculator.GetDist(_p1, new Point3D(_p1.X, _p3.Y, _p1.Z));
             }
             set { SetWidth(value); }
         }
@@ -173,22 +200,14 @@ namespace Primitives
         private void SetLength(double length)
         {
             double delta = length - Length;
-            var point = PointsList.Last();
-            PointsList.Remove(point);
-            point = new Point3D(point.X + delta, point.Y, point.Z);
-            PointsList.Add(point);
-
-            UpdateLastPoint(point);
+            _p3 = new Point3D(_p3.X + delta, _p3.Y, _p3.Z);
+            UpdateLastPoint(_p3);
         }
         private void SetWidth(double width)
         {
             double delta = width - Width;
-            var point = PointsList.Last();
-            PointsList.Remove(point);
-            point = new Point3D(point.X, point.Y - delta, point.Z);
-            PointsList.Add(point);
-
-            UpdateLastPoint(point);
+            _p3 = new Point3D(_p3.X, _p3.Y - delta, _p3.Z);
+            UpdateLastPoint(_p3);
         }
         private void SetSelectedColor()
         {

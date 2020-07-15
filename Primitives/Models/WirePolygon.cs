@@ -25,7 +25,7 @@ namespace Primitives
 
         public WirePolygon(List<Point3D> points)
         {
-            PointsList = points.ToList(); 
+            PointsList = points.ToList();
 
             for (int i = 0; i <= PointsList.Count - 2; i++)
             {
@@ -66,6 +66,38 @@ namespace Primitives
             }
             Points.Add(PointsList.Last());
             Points.Add(point);
+        }
+
+        public void Update()
+        {
+            Points.Clear();
+
+            for (int i = 0; i <= PointsList.Count - 2; i++)
+            {
+                Points.Add(PointsList[i]);
+                Points.Add(PointsList[i + 1]);
+            }
+            Points.Add(PointsList.Last());
+            Points.Add(PointsList.First());
+        }
+
+        public Point3D Center
+        {
+            get
+            {
+                return Calculator.Centroid(PointsList);
+            }
+            set
+            {
+                var deltaX = Calculator.Centroid(PointsList).X - value.X;
+                var deltaY = Calculator.Centroid(PointsList).Y - value.Y;
+
+                for (int i = 0; i < PointsList.Count; i++)
+                {
+                    PointsList[i] = new Point3D(PointsList[i].X - deltaX, PointsList[i].Y - deltaY, 0);
+                }
+                Update();
+            }
         }
 
         /// <summary>

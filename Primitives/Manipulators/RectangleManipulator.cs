@@ -37,7 +37,7 @@ namespace Primitives
 
         #region MetaDirection
 
-        /// <summary>
+        /*/// <summary>
         /// Identifies the <see cref="Direction"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register(
@@ -62,7 +62,7 @@ namespace Primitives
                 this.SetValue(DirectionProperty, value);
             }
         }
-
+        */
         #endregion
 
         public override void Bind(ModelVisual3D source)
@@ -99,7 +99,7 @@ namespace Primitives
                 controlPoint = new Point3D(_rect.Left, _rect.Center.Y, 0);
                 mesh.AddBox(controlPoint, 0.3, 0.3, 0);
 
-                controlPoint = new Point3D(_rect.Center.X, _rect.Center.Y, 0);
+                controlPoint = _rect.Center;
                 mesh.AddEllipsoid(controlPoint,0.2,0.2,0);
 
                 controlPoint = new Point3D(_rect.Left, _rect.Top, 0);
@@ -184,20 +184,20 @@ namespace Primitives
             {
                 var hitPlaneOrigin = this.ToWorld(this.Position);
                 var p = e.GetPosition(this.ParentViewport);
-                var nearestPoint = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
+                /*var nearestPoint = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
                 if (nearestPoint == null)
                 {
                     return;
-                }
+                }*/
 
-                var delta = this.ToLocal(nearestPoint.Value) - this.lastPoint;
-                this.Value += Vector3D.DotProduct(delta, this.Direction);
+              //  var delta = this.ToLocal(nearestPoint.Value) - this.lastPoint;
+               // this.Value += Vector3D.DotProduct(delta, this.Direction);
 
-                nearestPoint = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
+                /*nearestPoint = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
                 if (nearestPoint != null)
                 {
                     this.lastPoint = this.ToLocal(nearestPoint.Value);
-                }
+                }*/
 
                 if (_mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue)
                 {
@@ -247,7 +247,7 @@ namespace Primitives
             }
         }
 
-        /// <summary>
+     /*   /// <summary>
         /// Gets the nearest point on the translation axis.
         /// </summary>
         /// <param name="position">
@@ -272,6 +272,6 @@ namespace Primitives
 
             var ray = new Ray3D(this.ToWorld(this.Position), this.ToWorld(this.Direction));
             return ray.GetNearest(hpp.Value);
-        }
+        }*/
     }
 }

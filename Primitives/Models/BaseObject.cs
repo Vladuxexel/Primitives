@@ -11,14 +11,13 @@ namespace Primitives
 {
     public abstract class BaseObject : LinesVisual3D
     {
-        protected List<Point3D> PointsList { get; set; } = new List<Point3D>();
+        public List<Point3D> PointsList { get; set; } = new List<Point3D>();
 
         protected string Name { get; set; }
 
         public virtual void AddPoint(Point3D point)
         {
             Points.Add(point);
-
         }
 
         public virtual void UpdateLastPoint(Point3D point) { }

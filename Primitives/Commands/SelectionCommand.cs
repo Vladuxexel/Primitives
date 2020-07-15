@@ -20,12 +20,36 @@ namespace Primitives.Commands
 
             var result = mainWindowVM.viewport.Viewport.FindHits(mousePos);
 
-            if (mainWindowVM.CurrentManipulator == null)
+            if (mainWindowVM.CurrentManipulator != null)
             {
-                 mainWindowVM.CurrentManipulator = new RectangleManipulator(mainWindowVM)
+                mainWindowVM.CurrentManipulator.UnBind();
+                mainWindowVM.viewport.Children.Remove(mainWindowVM.CurrentManipulator);
+                mainWindowVM.CurrentManipulator = null;
+            }
+
+            if (result.Any())
+            {
+                if (result.First().Visual is WireRectangle)
                 {
-                    Color = Colors.Blue,
-                };
+                    mainWindowVM.CurrentManipulator = new RectangleManipulator(mainWindowVM)
+                    {
+                        Color = Colors.Blue,
+                    };
+                }
+                else if (result.First().Visual is WirePolygon)
+                {
+                    if (mainWindowVM.CurrentManipulator != null)
+                    {
+                        mainWindowVM.CurrentManipulator = null;
+                    }
+                    else
+                    {
+                        mainWindowVM.CurrentManipulator = new PolygonManipulator(mainWindowVM)
+                        {
+                            Color = Colors.Blue,
+                        };
+                    }
+                }
             }
 
             foreach (var elem in mainWindowVM.viewport.Children.OfType<BaseObject>())
@@ -50,6 +74,12 @@ namespace Primitives.Commands
                 {
                     poly.IsSelected = true;
                     mainWindowVM.Props = poly.GetProps();
+
+                    mainWindowVM.CurrentManipulator.Bind(poly);
+                    if (!mainWindowVM.viewport.Children.Contains(mainWindowVM.CurrentManipulator))
+                    {
+                        mainWindowVM.viewport.Children.Add(mainWindowVM.CurrentManipulator);
+                    }
                 }
             }
             else

@@ -16,7 +16,7 @@ namespace Primitives
 {
     public class WireRectangle : BaseObject, INotifyPropertyChanged
     {
-        private Point3D _p1, /*_p2,*/ _p3; /*_p4;*/
+        private Point3D _p1, _p3;
         private bool _isSelected;
         private Color _brush = Colors.Green;
         private readonly int number = 0;
@@ -49,18 +49,13 @@ namespace Primitives
             Points.Add(_p1);
         }
 
-        private void Update()
-        {
-            UpdateLastPoint(_p3);
-        }
-
         public double Top
         {
             get => _p1.Y;
             set
             {
                 _p1 = new Point3D(_p1.X, value, _p1.Z);
-                Update();
+                UpdateLastPoint(_p3);
             }
         }
         public double Right
@@ -69,7 +64,7 @@ namespace Primitives
             set
             {
                 _p3 = new Point3D(value, _p3.Y, _p3.Z);
-                Update();
+                UpdateLastPoint(_p3);
             }
         }
         public double Bottom
@@ -78,7 +73,7 @@ namespace Primitives
             set
             {
                 _p3 = new Point3D(_p3.X, value, _p3.Z);
-                Update();
+                UpdateLastPoint(_p3);
             }
         }
         public double Left
@@ -87,7 +82,7 @@ namespace Primitives
             set
             {
                 _p1 = new Point3D(value, _p1.Y, _p1.Z);
-                Update();
+                UpdateLastPoint(_p3);
             }
         }
 
@@ -101,7 +96,7 @@ namespace Primitives
 
                 _p1 = new Point3D(_p1.X - deltaX, _p1.Y - deltaY, 0);
                 _p3 = new Point3D(_p3.X - deltaX, _p3.Y - deltaY, 0);
-                Update();
+                UpdateLastPoint(_p3);
             }
         }
 
@@ -111,7 +106,7 @@ namespace Primitives
             set
             {
                 _p1 = value;
-                Update();
+                UpdateLastPoint(_p3);
             }
         }
         public Point3D TopRight
@@ -123,7 +118,7 @@ namespace Primitives
                 var deltaY = _p1.Y - value.Y;
                 _p1 = new Point3D(_p1.X, _p1.Y - deltaY, 0);
                 _p3 = new Point3D(_p3.X - deltaX, _p3.Y, 0);
-                Update();
+                UpdateLastPoint(_p3);
             }
         }
         public Point3D BottomRight
@@ -132,7 +127,7 @@ namespace Primitives
             set
             {
                 _p3 = value;
-                Update();
+                UpdateLastPoint(_p3);
             }
         }
         public Point3D BottomLeft
@@ -144,7 +139,7 @@ namespace Primitives
                 var deltaY = _p3.Y - value.Y;
                 _p1 = new Point3D(_p1.X - deltaX, _p1.Y, 0);
                 _p3 = new Point3D(_p3.X, _p3.Y - deltaY, 0);
-                Update();
+                UpdateLastPoint(_p3);
             }
         }
 

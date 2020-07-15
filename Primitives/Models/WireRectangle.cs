@@ -19,7 +19,7 @@ namespace Primitives
         private Point3D _p1, _p3;
         private bool _isSelected;
         private Color _brush = Colors.Green;
-        private readonly int number = 0;
+        private readonly int number = 1;
         private bool _isEndCreated;
 
         public WireRectangle(Point3D point1)
@@ -29,6 +29,7 @@ namespace Primitives
             Color = _brush;
             Name = $"Прямоугольник {number}";
             number++;
+            Type = Types.Rectangle;
         }
 
         public override void UpdateLastPoint(Point3D point)

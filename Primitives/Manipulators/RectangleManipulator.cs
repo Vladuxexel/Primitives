@@ -10,19 +10,6 @@ using HelixToolkit.Wpf;
 
 namespace Primitives
 {
-    enum Direction
-    {
-        Top,
-        Bottom,
-        Left,
-        Right,
-        Center,
-        TopLeft,
-        TopRight,
-        BottomRight,
-        BottomLeft
-    }
-
     class RectangleManipulator : Manipulator
     {
         private WireRectangle _rect;

@@ -13,7 +13,8 @@ namespace Primitives
     {
         public List<Point3D> PointsList { get; set; } = new List<Point3D>();
 
-        protected string Name { get; set; }
+        public string Name { get; set; }
+        public Types Type { get; set; }
 
         public virtual void AddPoint(Point3D point)
         {

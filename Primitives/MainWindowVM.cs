@@ -42,7 +42,7 @@ namespace Primitives
             this.viewport = viewport;
             var rect = new WireRectangle(new Point3D(-18,10,0));
             rect.AddPoint(new Point3D(-5,2,0));
-            viewport.Children.Add(rect);
+            Collection.Add(rect);
             tempCoordinates.Add(new Point3D(0,0,0));
             tempCoordinates.Add(new Point3D(4, 4, 0));
             tempCoordinates.Add(new Point3D(8, 0, 0));
@@ -82,11 +82,28 @@ namespace Primitives
         public DrawCommand DrawCommand { get; }
         public SelectingCommand SelectingCommand { get; }
         #endregion
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
+    public enum Types
+    {
+        Rectangle,
+        Polygon
+    }
+    public enum Direction
+    {
+        Top,
+        Bottom,
+        Left,
+        Right,
+        Center,
+        TopLeft,
+        TopRight,
+        BottomRight,
+        BottomLeft
     }
 }

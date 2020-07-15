@@ -14,12 +14,14 @@
             <ColumnDefinition Width="0.25*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TreeView Grid.Column="0">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Collection}">
-                    <TextBlock Text="{Binding Name}"/>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
+        <TreeView x:Name="TreeView" Grid.Column="0">
+            <TreeViewItem Header="Геометрия" ItemsSource="{Binding Collection}" IsExpanded="True">
+                <TreeViewItem.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </TreeViewItem.ItemTemplate>
+            </TreeViewItem>
         </TreeView>
         <Grid Grid.Column="1" Panel.ZIndex="1">
             <Grid.RowDefinitions>

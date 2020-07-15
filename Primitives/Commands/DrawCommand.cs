@@ -67,13 +67,13 @@ namespace Primitives
                 {
                     mainWindowVM.CurrentObject = new WireRectangle(point);
                     mainWindowVM.CurrentObject.UpdateLastPoint(point);
-                    mainWindowVM.viewport.Children.Add(mainWindowVM.CurrentObject);
+                    mainWindowVM.Collection.Add(mainWindowVM.CurrentObject);
                 }
                 else if (mainWindowVM.isPolygon)
                 {
                    mainWindowVM.CurrentObject = new WirePolygon(point);
                    mainWindowVM.CurrentObject.UpdateLastPoint(point);
-                   mainWindowVM.viewport.Children.Add(mainWindowVM.CurrentObject);
+                   mainWindowVM.Collection.Add(mainWindowVM.CurrentObject);
                 }
             }
             else

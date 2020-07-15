@@ -10,7 +10,6 @@ using HelixToolkit.Wpf;
 
 namespace Primitives
 {
-
     enum Direction
     {
         Top,
@@ -26,44 +25,16 @@ namespace Primitives
 
     class RectangleManipulator : Manipulator
     {
-        /// <summary>
-        /// The last point.
-        /// </summary>
-        private Point3D lastPoint;
-
         private WireRectangle _rect;
 
         private Direction _currentDirection;
 
-        #region MetaDirection
+        private readonly MainWindowVM _mainWindowVM;
 
-        /*/// <summary>
-        /// Identifies the <see cref="Direction"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register(
-            "Direction",
-            typeof(Vector3D),
-            typeof(TranslateManipulator),
-            new UIPropertyMetadata(UpdateGeometry));
-
-        /// <summary>
-        /// Gets or sets the direction of the translation.
-        /// </summary>
-        /// <value> The direction. </value>
-        public Vector3D Direction
+        public RectangleManipulator(MainWindowVM mainWindowVm)
         {
-            get
-            {
-                return (Vector3D)this.GetValue(DirectionProperty);
-            }
-
-            set
-            {
-                this.SetValue(DirectionProperty, value);
-            }
+            _mainWindowVM = mainWindowVm;
         }
-        */
-        #endregion
 
         public override void Bind(ModelVisual3D source)
         {
@@ -85,9 +56,7 @@ namespace Primitives
             if (_rect != null)
             {
                 var mesh = new MeshBuilder(false, false);
-                Point3D controlPoint;
-
-                controlPoint = new Point3D(_rect.Center.X, _rect.Top, 0);
+                Point3D controlPoint = new Point3D(_rect.Center.X, _rect.Top, 0);
                 mesh.AddBox(controlPoint, 0.3,0.3,0);
                 
                 controlPoint = new Point3D(_rect.Right, _rect.Center.Y, 0);
@@ -115,13 +84,6 @@ namespace Primitives
                 mesh.AddEllipsoid(controlPoint, 0.1, 0.1, 0);
                 Model.Geometry = mesh.ToMesh();
             }
-        }
-
-        private MainWindowVM _mainWindowVM;
-
-        public RectangleManipulator(MainWindowVM mainWindowVm)
-        {
-            _mainWindowVM = mainWindowVm;
         }
 
         /// <summary>
@@ -182,23 +144,6 @@ namespace Primitives
             base.OnMouseMove(e);
             if (this.IsMouseCaptured)
             {
-                var hitPlaneOrigin = this.ToWorld(this.Position);
-                var p = e.GetPosition(this.ParentViewport);
-                /*var nearestPoint = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
-                if (nearestPoint == null)
-                {
-                    return;
-                }*/
-
-              //  var delta = this.ToLocal(nearestPoint.Value) - this.lastPoint;
-               // this.Value += Vector3D.DotProduct(delta, this.Direction);
-
-                /*nearestPoint = this.GetNearestPoint(p, hitPlaneOrigin, this.HitPlaneNormal);
-                if (nearestPoint != null)
-                {
-                    this.lastPoint = this.ToLocal(nearestPoint.Value);
-                }*/
-
                 if (_mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue)
                 {
                     var point = _mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
@@ -246,32 +191,5 @@ namespace Primitives
                 UpdateGeometry();
             }
         }
-
-     /*   /// <summary>
-        /// Gets the nearest point on the translation axis.
-        /// </summary>
-        /// <param name="position">
-        /// The position (in screen coordinates).
-        /// </param>
-        /// <param name="hitPlaneOrigin">
-        /// The hit plane origin (world coordinate system).
-        /// </param>
-        /// <param name="hitPlaneNormal">
-        /// The hit plane normal (world coordinate system).
-        /// </param>
-        /// <returns>
-        /// The nearest point (world coordinates) or null if no point could be found.
-        /// </returns>
-        private Point3D? GetNearestPoint(Point position, Point3D hitPlaneOrigin, Vector3D hitPlaneNormal)
-        {
-            var hpp = this.GetHitPlanePoint(position, hitPlaneOrigin, hitPlaneNormal);
-            if (hpp == null)
-            {
-                return null;
-            }
-
-            var ray = new Ray3D(this.ToWorld(this.Position), this.ToWorld(this.Direction));
-            return ray.GetNearest(hpp.Value);
-        }*/
     }
 }

@@ -90,6 +90,7 @@ namespace Primitives.Commands
                     mainWindowVM.viewport.Children.Remove(mainWindowVM.CurrentManipulator);
                     mainWindowVM.CurrentManipulator = null;
                 }
+                mainWindowVM.Props = null;
             }
         }
     }

@@ -21,7 +21,7 @@ namespace Primitives
     {
         private bool _isSelected;
         private Color _brush = Colors.Green;
-        private static int number = 1;
+        private static int _number = 1;
 
         public WirePolygon(List<Point3D> points)
         {
@@ -38,18 +38,19 @@ namespace Primitives
 
             Thickness = 3;
             Color = _brush;
-            Name = $"Полигон {number}";
-            number++;
+            Name = $"Полигон {_number}";
+            _number++;
             Type = Types.Polygon;
         }
 
         public WirePolygon(Point3D point)
         {
+            Type = Types.Polygon;
             PointsList.Add(point);
             Thickness = 3;
             Color = _brush;
-            Name = $"Полигон {number}";
-            number++;
+            Name = $"Полигон {_number}";
+            _number++;
         }
 
         /// <summary>
@@ -69,7 +70,7 @@ namespace Primitives
             Points.Add(point);
         }
 
-        public void Update()
+        private void Update()
         {
             Points.Clear();
 

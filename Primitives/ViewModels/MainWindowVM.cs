@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Threading;
 using Primitives.Commands;
@@ -22,19 +23,24 @@ using SelectionCommand = HelixToolkit.Wpf.SelectionCommand;
 
 namespace Primitives
 {
-    class MainWindowVM : INotifyPropertyChanged
+    class MainWindowVM : BaseViewModel
     {
         public bool isRectangle = false;
         public bool isPolygon = false;
+
         public readonly List<Point3D> tempCoordinates = new List<Point3D>();
         public BaseObject CurrentObject { get; set; }
 
         public Manipulator CurrentManipulator { get; set; }
 
         public ViewportChildCollection Collection { get; set; }
+
+        public List<ViewportChildCollection> Tree { get; set; }
+
         public MainWindowVM(HelixViewport3D viewport)
         {
             Collection = new ViewportChildCollection(viewport);
+            Tree = new List<ViewportChildCollection> {Collection};
             DrawCommand = new DrawCommand();
             RectangleButtonCommand = new RectangleButtonCommand();
             PolygonButtonCommand = new PolygonButtonCommand();
@@ -82,12 +88,6 @@ namespace Primitives
         public DrawCommand DrawCommand { get; }
         public SelectingCommand SelectingCommand { get; }
         #endregion
-        
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
     public enum Types
     {

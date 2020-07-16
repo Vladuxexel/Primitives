@@ -7,21 +7,32 @@
         xmlns:hx="http://helix-toolkit.org/wpf"
         xmlns:hxd="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:models="clr-namespace:Primitives.Models"
         mc:Ignorable="d"
         Title="MainWindow" WindowState="Maximized">
+    <Window.Resources>
+        <HierarchicalDataTemplate ItemsSource="{Binding ConvertedData}" DataType="{x:Type models:ViewportChildCollection}">
+            <Label Content="Геометрия"/>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate ItemsSource="{Binding Items}" DataType="{x:Type local:ConvertedData}">
+            <Label Content="{Binding Type}"/>
+        </HierarchicalDataTemplate>
+        <DataTemplate DataType="{x:Type local:BaseObject}">
+            <Label Content="{Binding Name}"/>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="TreeView" Grid.Column="0">
-            <TreeViewItem Header="Геометрия" ItemsSource="{Binding Collection}" IsExpanded="True">
-                <TreeViewItem.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}"/>
-                    </DataTemplate>
-                </TreeViewItem.ItemTemplate>
-            </TreeViewItem>
+        <TreeView x:Name="TreeView" Grid.Column="0" ItemsSource="{Binding Tree}">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="True" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
         </TreeView>
         <Grid Grid.Column="1" Panel.ZIndex="1">
             <Grid.RowDefinitions>
@@ -39,6 +50,7 @@
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" Margin="3 3 3 3" Background="AntiqueWhite">
                 <Button Margin="3" Command="{Binding RectangleButtonCommand}" CommandParameter="{Binding}" Content="Rectangle" />
                 <Button Margin="3" Command="{Binding PolygonButtonCommand}" CommandParameter="{Binding}" Content="Polygon"/>
+                <CheckBox x:Name="IsBindable" Content="Привязка к точкам" IsChecked="True"/>
             </StackPanel>
             <DataGrid Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Props}" VerticalAlignment="Top" Margin="99,3,3,0" Grid.ColumnSpan="2" AutoGenerateColumns="False">
                 <DataGrid.Columns>

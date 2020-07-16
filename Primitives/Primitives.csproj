@@ -103,6 +103,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MyConverter.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="Manipulators\Manipulator.cs" />
     <Compile Include="Models\BaseObject.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
@@ -111,11 +113,11 @@
     <Compile Include="Commands\PolygonButtonCommand.cs" />
     <Compile Include="Commands\RectangleButtonCommand.cs" />
     <Compile Include="Commands\SelectionCommand.cs" />
-    <Compile Include="MainWindowVM.cs" />
+    <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="Models\ViewportChildCollection.cs" />
     <Compile Include="Manipulators\PolygonManipulator.cs" />
     <Compile Include="Manipulators\RectangleManipulator.cs" />
-    <Compile Include="ViewPropsVM.cs" />
+    <Compile Include="ViewModels\ViewPropsVM.cs" />
     <Compile Include="Models\WirePolygon.cs" />
     <Compile Include="Models\WireRectangle.cs" />
     <Compile Include="Commands\TypedCommand.cs" />

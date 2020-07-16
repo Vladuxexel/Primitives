@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,34 @@ namespace Primitives.Models
     {
         private readonly HelixViewport3D _viewport;
 
+        public ObservableCollection<ConvertedData> ConvertedData
+        {
+            get
+            {
+                var val = this.GroupBy(t => t.GetType())
+                    .Select(g => new ConvertedData
+                    {
+                        Type = GetName(g.Key.ToString()),
+                        Items = new ObservableCollection<BaseObject>(g.ToList())
+                    });
+                return new ObservableCollection<ConvertedData>(val);
+            }
+        }
+
+        private string GetName(string type)
+        {
+            switch (type)
+            {
+                case "Primitives.WireRectangle":
+                    type = "Прямоугольники";
+                    break;
+                case "Primitives.WirePolygon":
+                    type = "Полигоны";
+                    break;
+            }
+            return type;
+        }
+
         public ViewportChildCollection(HelixViewport3D viewport)
         {
             _viewport = viewport;
@@ -21,12 +51,17 @@ namespace Primitives.Models
         {
             _viewport.Children.Add(item);
             base.InsertItem(index, item);
+            OnPropertyChanged(new PropertyChangedEventArgs("ConvertedData"));
+
         }
 
         protected override void RemoveItem(int index)
         {
             _viewport.Children.RemoveAt(index);
             base.RemoveItem(index);
+            OnPropertyChanged(new PropertyChangedEventArgs("ConvertedData"));
         }
+
+
     }
 }

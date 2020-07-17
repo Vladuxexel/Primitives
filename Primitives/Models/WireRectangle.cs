@@ -163,8 +163,14 @@ namespace Primitives
             {
                 _isSelected = value;
                 SetSelectedColor();
+                Manipulations();
                 OnPropertyChanged("IsSelected");
             }
+        }
+
+        private void Manipulations()
+        {
+           
         }
 
         public ObservableCollection<ViewPropsVM> GetProps()

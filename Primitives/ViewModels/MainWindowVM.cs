@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using Primitives.Commands;
 using Primitives.Models;
@@ -28,28 +29,36 @@ namespace Primitives
         public bool isRectangle = false;
         public bool isPolygon = false;
 
+        public readonly HelixViewport3D viewport;
+
         public readonly List<Point3D> tempCoordinates = new List<Point3D>();
+
         public BaseObject CurrentObject { get; set; }
 
         public Manipulator CurrentManipulator { get; set; }
 
-        public ViewportChildCollection Collection { get; set; }
+        public ViewportChildCollection Collection { get; }
 
-        public List<ViewportChildCollection> Tree { get; set; }
+        public List<ViewportChildCollection> Tree { get; }
 
-        public MainWindowVM(HelixViewport3D viewport)
+        public TreeView MainTreeView { get; set; }
+
+        public MainWindowVM(HelixViewport3D viewport, TreeView treeView)
         {
             Collection = new ViewportChildCollection(viewport);
-            Tree = new List<ViewportChildCollection> {Collection};
+            Tree = new List<ViewportChildCollection> { Collection };
             DrawCommand = new DrawCommand();
             RectangleButtonCommand = new RectangleButtonCommand();
             PolygonButtonCommand = new PolygonButtonCommand();
             SelectingCommand = new SelectingCommand();
+            TreeViewSelectedItemCommand = new TreeViewSelectedItemCommand();
+            DeletingCommand = new DeletingCommand();
             this.viewport = viewport;
-            var rect = new WireRectangle(new Point3D(-18,10,0));
-            rect.AddPoint(new Point3D(-5,2,0));
+            MainTreeView = treeView;
+            var rect = new WireRectangle(new Point3D(-18, 10, 0));
+            rect.AddPoint(new Point3D(-5, 2, 0));
             Collection.Add(rect);
-            tempCoordinates.Add(new Point3D(0,0,0));
+            tempCoordinates.Add(new Point3D(0, 0, 0));
             tempCoordinates.Add(new Point3D(4, 4, 0));
             tempCoordinates.Add(new Point3D(8, 0, 0));
             tempCoordinates.Add(new Point3D(7, -5, 0));
@@ -57,7 +66,7 @@ namespace Primitives
             var poly = new WirePolygon(tempCoordinates);
             Collection.Add(poly);
             tempCoordinates.Clear();
-            viewport.MouseMove += ViewportOnMouseMove;
+            this.viewport.MouseMove += ViewportOnMouseMove;
         }
 
         private void ViewportOnMouseMove(object sender, MouseEventArgs e)
@@ -70,6 +79,7 @@ namespace Primitives
         }
 
         private ObservableCollection<ViewPropsVM> _props = new ObservableCollection<ViewPropsVM>();
+
         public ObservableCollection<ViewPropsVM> Props
         {
             get => _props;
@@ -80,13 +90,13 @@ namespace Primitives
             }
         }
 
-        public readonly HelixViewport3D viewport;
-
         #region Commands definitions
         public RectangleButtonCommand RectangleButtonCommand { get; }
         public PolygonButtonCommand PolygonButtonCommand { get; }
         public DrawCommand DrawCommand { get; }
         public SelectingCommand SelectingCommand { get; }
+        public TreeViewSelectedItemCommand TreeViewSelectedItemCommand { get; }
+        public DeletingCommand DeletingCommand { get; }
         #endregion
     }
     public enum Types

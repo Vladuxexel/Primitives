@@ -8,31 +8,37 @@
         xmlns:hxd="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:models="clr-namespace:Primitives.Models"
+        xmlns:primitives="clr-namespace:Primitives"
         mc:Ignorable="d"
         Title="MainWindow" WindowState="Maximized">
-    <Window.Resources>
-        <HierarchicalDataTemplate ItemsSource="{Binding ConvertedData}" DataType="{x:Type models:ViewportChildCollection}">
-            <Label Content="Геометрия"/>
-        </HierarchicalDataTemplate>
-        <HierarchicalDataTemplate ItemsSource="{Binding Items}" DataType="{x:Type local:ConvertedData}">
-            <Label Content="{Binding Type}"/>
-        </HierarchicalDataTemplate>
-        <DataTemplate DataType="{x:Type local:BaseObject}">
-            <Label Content="{Binding Name}"/>
-        </DataTemplate>
-    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TreeView x:Name="TreeView" Grid.Column="0" ItemsSource="{Binding Tree}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectedItemChanged">
+                    <i:InvokeCommandAction Command="{Binding TreeViewSelectedItemCommand}" CommandParameter="{Binding}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="IsExpanded" Value="True" />
+                    <Setter Property="IsExpanded" Value="True"/>
                     <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
                 </Style>
             </TreeView.ItemContainerStyle>
+            <TreeView.Resources>
+                <HierarchicalDataTemplate ItemsSource="{Binding ConvertedData}" DataType="{x:Type models:ViewportChildCollection}">
+                    <Label Content="Геометрия"/>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Items}" DataType="{x:Type local:ConvertedData}">
+                    <Label Content="{Binding Type}"/>
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type local:BaseObject}">
+                    <Label Content="{Binding Name}"/>
+                </DataTemplate>
+            </TreeView.Resources>
         </TreeView>
         <Grid Grid.Column="1" Panel.ZIndex="1">
             <Grid.RowDefinitions>

@@ -238,6 +238,8 @@ namespace Primitives
             ((Manipulator)d).UpdateGeometry();
         }
 
+        public virtual void Updater() { }
+
         /// <summary>
         /// Projects the point on the hit plane.
         /// </summary>

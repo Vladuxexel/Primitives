@@ -11,7 +11,7 @@ using HelixToolkit.Wpf;
 
 namespace Primitives
 {
-    class DrawCommand : TypedCommand<MainWindowVM>
+    public class DrawCommand : TypedCommand<MainWindowVM>
     {
         protected override bool CanExecute(MainWindowVM mainWindowVM)
         {

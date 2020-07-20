@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace Primitives.Commands
 {
-    class DeletingCommand : TypedCommand<MainWindowVM>
+    public class DeletingCommand : TypedCommand<MainWindowVM>
     {
         protected override void Execute(MainWindowVM parameter)
         {

@@ -24,7 +24,7 @@ using SelectionCommand = HelixToolkit.Wpf.SelectionCommand;
 
 namespace Primitives
 {
-    class MainWindowVM : BaseViewModel
+    public class MainWindowVM : BaseViewModel
     {
         public bool isRectangle = false;
         public bool isPolygon = false;
@@ -41,7 +41,7 @@ namespace Primitives
 
         public List<ViewportChildCollection> Tree { get; }
 
-        public TreeView MainTreeView { get; set; }
+        public TreeView MainTreeView { get; }
 
         public MainWindowVM(HelixViewport3D viewport, TreeView treeView)
         {

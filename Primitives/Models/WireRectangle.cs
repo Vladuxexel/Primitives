@@ -22,14 +22,20 @@ namespace Primitives
         private static int _number = 1;
         private bool _isEndCreated;
 
+        private RectangleManipulator _manipulator;
+
         public WireRectangle(Point3D point1)
         {
             _p1 = point1;
             Thickness = 3;
             Color = _brush;
-            Name = $"Прямоугольник {_number}";
-            _number++;
+            Name = $"Прямоугольник {_number++}";
             Type = Types.Rectangle;
+        }
+
+        public override void UpdateManipulator()
+        {
+            _manipulator.Update();
         }
 
         public override void UpdateLastPoint(Point3D point)
@@ -86,7 +92,6 @@ namespace Primitives
                 UpdateLastPoint(_p3);
             }
         }
-
         public Point3D Center
         {
             get => new Point3D((_p1.X + _p3.X) / 2, (_p1.Y + _p3.Y) / 2, 0);
@@ -100,7 +105,6 @@ namespace Primitives
                 UpdateLastPoint(_p3);
             }
         }
-
         public Point3D TopLeft
         {
             get => _p1;
@@ -163,14 +167,8 @@ namespace Primitives
             {
                 _isSelected = value;
                 SetSelectedColor();
-                Manipulations();
                 OnPropertyChanged("IsSelected");
             }
-        }
-
-        private void Manipulations()
-        {
-           
         }
 
         public ObservableCollection<ViewPropsVM> GetProps()
@@ -204,12 +202,14 @@ namespace Primitives
             double delta = length - Length;
             _p3 = new Point3D(_p3.X + delta, _p3.Y, _p3.Z);
             UpdateLastPoint(_p3);
+            UpdateManipulator();
         }
         private void SetWidth(double width)
         {
             double delta = width - Width;
             _p3 = new Point3D(_p3.X, _p3.Y - delta, _p3.Z);
             UpdateLastPoint(_p3);
+            UpdateManipulator();
         }
         private void SetSelectedColor()
         {
@@ -229,6 +229,27 @@ namespace Primitives
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void BindManipulator(MainWindowVM mainWindowVm)
+        {
+            _manipulator = new RectangleManipulator(mainWindowVm)
+            {
+                Color = Colors.Blue,
+            };
+            _manipulator.Bind(this);
+            mainWindowVm.viewport.Children.Add(_manipulator);
+
+        }
+
+        public override void DeleteManipulator(MainWindowVM mainWindowVm)
+        {
+            if (_manipulator!=null)
+            {
+                _manipulator.UnBind();
+                mainWindowVm.viewport.Children.Remove(_manipulator);
+                mainWindowVm.CurrentManipulator = null;
+            }
         }
     }
 }

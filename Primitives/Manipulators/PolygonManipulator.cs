@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +48,10 @@ namespace Primitives
             }
         }
 
+        public override void Updater()
+        {
+            UpdateGeometry();
+        }
         /// <summary>
         /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
@@ -54,7 +59,6 @@ namespace Primitives
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            var point = _mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
             CaptureMouse();
         }
 

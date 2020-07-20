@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
 
@@ -35,6 +36,11 @@ namespace Primitives
             Model = null;
         }
 
+        public void Update()
+        {
+            UpdateGeometry();
+        }
+
         /// <summary>
         /// Updates the geometry.
         /// </summary>
@@ -44,8 +50,8 @@ namespace Primitives
             {
                 var mesh = new MeshBuilder(false, false);
                 Point3D controlPoint = new Point3D(_rect.Center.X, _rect.Top, 0);
-                mesh.AddBox(controlPoint, 0.3,0.3,0);
-                
+                mesh.AddBox(controlPoint, 0.3, 0.3, 0);
+
                 controlPoint = new Point3D(_rect.Right, _rect.Center.Y, 0);
                 mesh.AddBox(controlPoint, 0.3, 0.3, 0);
 
@@ -56,7 +62,7 @@ namespace Primitives
                 mesh.AddBox(controlPoint, 0.3, 0.3, 0);
 
                 controlPoint = _rect.Center;
-                mesh.AddEllipsoid(controlPoint,0.2,0.2,0);
+                mesh.AddEllipsoid(controlPoint, 0.2, 0.2, 0);
 
                 controlPoint = new Point3D(_rect.Left, _rect.Top, 0);
                 mesh.AddEllipsoid(controlPoint, 0.1, 0.1, 0);
@@ -70,6 +76,7 @@ namespace Primitives
                 controlPoint = new Point3D(_rect.Left, _rect.Bottom, 0);
                 mesh.AddEllipsoid(controlPoint, 0.1, 0.1, 0);
                 Model.Geometry = mesh.ToMesh();
+                Model.Material = new DiffuseMaterial(new SolidColorBrush(Color));
             }
         }
 

@@ -22,6 +22,9 @@ namespace Primitives
         }
 
         public virtual void UpdateLastPoint(Point3D point) { }
+        public virtual void UpdateManipulator() { }
+
+        public virtual void DeleteManipulator(MainWindowVM obj) { }
 
         public abstract bool IsEndCreate { get; }
         public abstract bool IsSelected { get; set; }

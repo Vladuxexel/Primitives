@@ -38,8 +38,7 @@ namespace Primitives
 
             Thickness = 3;
             Color = _brush;
-            Name = $"Полигон {_number}";
-            _number++;
+            Name = $"Полигон {_number++}";
             Type = Types.Polygon;
         }
 
@@ -49,8 +48,7 @@ namespace Primitives
             PointsList.Add(point);
             Thickness = 3;
             Color = _brush;
-            Name = $"Полигон {_number}";
-            _number++;
+            Name = $"Полигон {_number++}";
         }
 
         /// <summary>

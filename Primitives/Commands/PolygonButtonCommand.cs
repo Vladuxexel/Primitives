@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Primitives.Commands
 {
-    class PolygonButtonCommand : TypedCommand<MainWindowVM>
+    public class PolygonButtonCommand : TypedCommand<MainWindowVM>
     {
         protected override void Execute(MainWindowVM mainWindowVM)
         {

@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace Primitives.Commands
 {
-    class TreeViewSelectedItemCommand : TypedCommand<MainWindowVM>
+    public class TreeViewSelectedItemCommand : TypedCommand<MainWindowVM>
     {
         protected override void Execute(MainWindowVM mainWindowVM)
         {
@@ -48,12 +48,12 @@ namespace Primitives.Commands
                 rect.IsSelected = true;
                 mainWindowVM.Props = rect.GetProps();
 
-                mainWindowVM.CurrentManipulator.Bind(rect);
+               /// mainWindowVM.CurrentManipulator.Bind(rect);
 
-                if (!mainWindowVM.viewport.Children.Contains(mainWindowVM.CurrentManipulator))
-                {
-                    mainWindowVM.viewport.Children.Add(mainWindowVM.CurrentManipulator);
-                }
+               // /if (!mainWindowVM.viewport.Children.Contains(mainWindowVM.CurrentManipulator))
+               // /{
+               //     mainWindowVM.viewport.Children.Add(mainWindowVM.CurrentManipulator);
+               // /}
             }
             else if (mainWindowVM.MainTreeView.SelectedItem is WirePolygon poly)
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Primitives.Commands
 {
-    class RectangleButtonCommand : TypedCommand<MainWindowVM>
+    public class RectangleButtonCommand : TypedCommand<MainWindowVM>
     {
         protected override void Execute(MainWindowVM mainWindowVM)
         {

@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace Primitives.Commands
 {
-    class SelectingCommand : TypedCommand<MainWindowVM>
+    public class SelectingCommand : TypedCommand<MainWindowVM>
     {
         protected override void Execute(MainWindowVM mainWindowVM)
         {
@@ -28,16 +28,20 @@ namespace Primitives.Commands
                 mainWindowVM.CurrentManipulator = null;
             }
 
+            foreach (var elem in mainWindowVM.viewport.Children.OfType<BaseObject>().ToList())
+            {
+                elem.IsSelected = false;
+            }
+
             if (result.Any())
             {
-                if (result.First().Visual is WireRectangle)
+                if (result.First().Visual is WireRectangle rect)
                 {
-                    mainWindowVM.CurrentManipulator = new RectangleManipulator(mainWindowVM)
-                    {
-                        Color = Colors.Blue,
-                    };
+                    rect.IsSelected = true;
+                    rect.BindManipulator(mainWindowVM);
+                    mainWindowVM.Props = rect.GetProps();
                 }
-                else if (result.First().Visual is WirePolygon)
+                else if (result.First().Visual is WirePolygon poly)
                 {
                     if (mainWindowVM.CurrentManipulator != null)
                     {
@@ -49,47 +53,26 @@ namespace Primitives.Commands
                         {
                             Color = Colors.Blue,
                         };
-                    }
-                }
-            }
 
-            foreach (var elem in mainWindowVM.viewport.Children.OfType<BaseObject>())
-            {
-                elem.IsSelected = false;
-            }
+                        poly.IsSelected = true;
 
-            if (result.Any())
-            {
-                if (result.First().Visual is WireRectangle rect)
-                {
-                    rect.IsSelected = true;
-                    mainWindowVM.Props = rect.GetProps();
+                        mainWindowVM.CurrentManipulator.Bind(poly);
 
-                    mainWindowVM.CurrentManipulator.Bind(rect);
-                    if (!mainWindowVM.viewport.Children.Contains(mainWindowVM.CurrentManipulator))
-                    {
-                        mainWindowVM.viewport.Children.Add(mainWindowVM.CurrentManipulator);
-                    }
-                }
-                else if (result.First().Visual is WirePolygon poly)
-                {
-                    poly.IsSelected = true;
-                    mainWindowVM.Props = poly.GetProps();
+                        if (!mainWindowVM.viewport.Children.Contains(mainWindowVM.CurrentManipulator))
+                        {
+                            mainWindowVM.viewport.Children.Add(mainWindowVM.CurrentManipulator);
+                        }
 
-                    mainWindowVM.CurrentManipulator.Bind(poly);
-                    if (!mainWindowVM.viewport.Children.Contains(mainWindowVM.CurrentManipulator))
-                    {
-                        mainWindowVM.viewport.Children.Add(mainWindowVM.CurrentManipulator);
+                        mainWindowVM.Props = poly.GetProps();
                     }
                 }
             }
             else
             {
-                if (mainWindowVM.CurrentManipulator != null)
+                foreach (var elem in mainWindowVM.viewport.Children.OfType<BaseObject>().ToList())
                 {
-                    mainWindowVM.CurrentManipulator.UnBind();
-                    mainWindowVM.viewport.Children.Remove(mainWindowVM.CurrentManipulator);
-                    mainWindowVM.CurrentManipulator = null;
+                    elem.IsSelected = false;
+                    elem.DeleteManipulator(mainWindowVM);
                 }
                 mainWindowVM.Props = null;
             }

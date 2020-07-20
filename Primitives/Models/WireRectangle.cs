@@ -167,7 +167,7 @@ namespace Primitives
             {
                 _isSelected = value;
                 SetSelectedColor();
-                OnPropertyChanged("IsSelected");
+                //OnPropertyChanged("IsSelected");
             }
         }
 

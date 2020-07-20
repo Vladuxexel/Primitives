@@ -23,6 +23,8 @@ namespace Primitives
         private Color _brush = Colors.Green;
         private static int _number = 1;
 
+        private PolygonManipulator _manipulator;
+
         public WirePolygon(List<Point3D> points)
         {
             PointsList = points.ToList();
@@ -169,6 +171,26 @@ namespace Primitives
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void BindManipulator(MainWindowVM mainWindowVm)
+        {
+            _manipulator = new PolygonManipulator(mainWindowVm)
+            {
+                Color = Colors.Blue,
+            };
+            _manipulator.Bind(this);
+            mainWindowVm.viewport.Children.Add(_manipulator);
+        }
+
+        public override void DeleteManipulator(MainWindowVM mainWindowVm)
+        {
+            if (_manipulator != null)
+            {
+                _manipulator.UnBind();
+                mainWindowVm.viewport.Children.Remove(_manipulator);
+                mainWindowVm.CurrentManipulator = null;
+            }
         }
     }
 }

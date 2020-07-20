@@ -14,68 +14,26 @@ namespace Primitives.Commands
         {
             mainWindowVM.tempCoordinates.Clear();
 
-            if (mainWindowVM.CurrentManipulator != null)
-            {
-                mainWindowVM.CurrentManipulator.UnBind();
-                mainWindowVM.viewport.Children.Remove(mainWindowVM.CurrentManipulator);
-                mainWindowVM.CurrentManipulator = null;
-            }
-
-            if (mainWindowVM.MainTreeView.SelectedItem is WireRectangle)
-            {
-                mainWindowVM.CurrentManipulator = new RectangleManipulator(mainWindowVM)
-                {
-                    Color = Colors.Blue,
-                };
-            }
-            else if (mainWindowVM.MainTreeView.SelectedItem is WirePolygon)
-            {
-                if (mainWindowVM.CurrentManipulator != null)
-                {
-                    mainWindowVM.CurrentManipulator = null;
-                }
-                else
-                {
-                    mainWindowVM.CurrentManipulator = new PolygonManipulator(mainWindowVM)
-                    {
-                        Color = Colors.Blue,
-                    };
-                }
-            }
-
             if (mainWindowVM.MainTreeView.SelectedItem is WireRectangle rect)
             {
+                Reset(mainWindowVM);
                 rect.IsSelected = true;
+                rect.BindManipulator(mainWindowVM);
                 mainWindowVM.Props = rect.GetProps();
-
-               /// mainWindowVM.CurrentManipulator.Bind(rect);
-
-               // /if (!mainWindowVM.viewport.Children.Contains(mainWindowVM.CurrentManipulator))
-               // /{
-               //     mainWindowVM.viewport.Children.Add(mainWindowVM.CurrentManipulator);
-               // /}
             }
             else if (mainWindowVM.MainTreeView.SelectedItem is WirePolygon poly)
             {
+                Reset(mainWindowVM);
                 poly.IsSelected = true;
+                poly.BindManipulator(mainWindowVM);
                 mainWindowVM.Props = poly.GetProps();
-
-                mainWindowVM.CurrentManipulator.Bind(poly);
-
-                if (!mainWindowVM.viewport.Children.Contains(mainWindowVM.CurrentManipulator))
-                {
-                    mainWindowVM.viewport.Children.Add(mainWindowVM.CurrentManipulator);
-                }
             }
-            else
+        }
+        private void Reset(MainWindowVM mainWindowVM)
+        {
+            foreach (var elem in mainWindowVM.viewport.Children.OfType<BaseObject>().ToList())
             {
-                if (mainWindowVM.CurrentManipulator != null)
-                {
-                    mainWindowVM.CurrentManipulator.UnBind();
-                    mainWindowVM.viewport.Children.Remove(mainWindowVM.CurrentManipulator);
-                    mainWindowVM.CurrentManipulator = null;
-                }
-                mainWindowVM.Props = null;
+                elem.DeleteManipulator(mainWindowVM);
             }
         }
     }

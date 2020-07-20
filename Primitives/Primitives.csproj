@@ -115,7 +115,7 @@
     <Compile Include="Commands\DrawCommand.cs" />
     <Compile Include="Commands\PolygonButtonCommand.cs" />
     <Compile Include="Commands\RectangleButtonCommand.cs" />
-    <Compile Include="Commands\SelectionCommand.cs" />
+    <Compile Include="Commands\SelectingCommand.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="Models\ViewportChildCollection.cs" />
     <Compile Include="Manipulators\PolygonManipulator.cs" />

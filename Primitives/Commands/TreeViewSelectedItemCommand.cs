@@ -2,6 +2,9 @@
 
 namespace Primitives.Commands
 {
+    /// <summary>
+    /// Selection an object on TreeView
+    /// </summary>
     public class TreeViewSelectedItemCommand : TypedCommand<MainWindowVM>
     {
         protected override void Execute(MainWindowVM mainWindowVM)
@@ -21,6 +24,10 @@ namespace Primitives.Commands
                 mainWindowVM.Props = poly.GetProps();
             }
         }
+        /// <summary>
+        /// Resets manipulator
+        /// </summary>
+        /// <param name="mainWindowVM"></param>
         private void ResetTreeView(MainWindowVM mainWindowVM)
         {
             foreach (var elem in mainWindowVM.Viewport.Children.OfType<BaseObject>().ToList())

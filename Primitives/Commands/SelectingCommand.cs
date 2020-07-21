@@ -4,6 +4,9 @@ using System.Windows.Input;
 
 namespace Primitives.Commands
 {
+    /// <summary>
+    /// Selection of object on viewport
+    /// </summary>
     public class SelectingCommand : TypedCommand<MainWindowVM>
     {
         protected override void Execute(MainWindowVM mainWindowVM)

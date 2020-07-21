@@ -10,6 +10,9 @@ using System.Windows.Media.Media3D;
 
 namespace Primitives
 {
+    /// <summary>
+    /// Main View Model
+    /// </summary>
     public class MainWindowVM : BaseViewModel
     {
         public bool IsRectangle = false;
@@ -74,6 +77,11 @@ namespace Primitives
             }
         }
 
+        /// <summary>
+        /// Method that binds drawing to existing points in some radius
+        /// </summary>
+        /// <param name="mousePos"></param>
+        /// <param name="radius"></param>
         private void Binder(Point3D mousePos, double radius)
         {
             var inRadiusPoints = new List<Point3D>();

@@ -49,7 +49,7 @@ namespace Primitives
         }
 
         /// <summary>
-        /// Method that allows to redraw current object in runtime to get imagination of current second point's position
+        /// Method that allows to redraw polygon object in runtime to get imagination of current second point's position
         /// </summary>
         /// <param name="point"></param>
         public override void UpdateLastPoint(Point3D point)
@@ -65,6 +65,9 @@ namespace Primitives
             Points.Add(point);
         }
 
+        /// <summary>
+        /// Updating geometry
+        /// </summary>
         private void Update()
         {
             Points.Clear();
@@ -78,6 +81,9 @@ namespace Primitives
             Points.Add(PointsList.First());
         }
 
+        /// <summary>
+        /// Point of polygon's center
+        /// </summary>
         public Point3D Center
         {
             get => Calculator.Centroid(PointsList);
@@ -138,6 +144,9 @@ namespace Primitives
             };
         }
 
+        /// <summary>
+        /// Returns perimeter of polygon
+        /// </summary>
         private double Perimeter => Calculator.GetPerimeter(PointsList);
 
         /// <summary>
@@ -156,6 +165,10 @@ namespace Primitives
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Binding a manipulator to it's object
+        /// </summary>
+        /// <param name="mainWindowVm"></param>
         public void BindManipulator(MainWindowVM mainWindowVm)
         {
             _manipulator = new PolygonManipulator(mainWindowVm)
@@ -166,6 +179,10 @@ namespace Primitives
             mainWindowVm.Viewport.Children.Add(_manipulator);
         }
 
+        /// <summary>
+        /// Deletes a manipulator from it's object
+        /// </summary>
+        /// <param name="mainWindowVm"></param>
         public override void DeleteManipulator(MainWindowVM mainWindowVm)
         {
             if (_manipulator != null)

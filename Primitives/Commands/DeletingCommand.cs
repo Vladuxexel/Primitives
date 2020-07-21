@@ -1,5 +1,8 @@
 ﻿namespace Primitives.Commands
 {
+    /// <summary>
+    /// Deleting figures using TreeView
+    /// </summary>
     public class DeletingCommand : TypedCommand<MainWindowVM>
     {
         protected override bool CanExecute(MainWindowVM mainWindowVM)

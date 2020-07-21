@@ -5,6 +5,9 @@ using Primitives.Models;
 
 namespace Primitives.Manipulators
 {
+    /// <summary>
+    /// Class representing a polygon's manipulator
+    /// </summary>
     internal class PolygonManipulator : Manipulator
     {
         private WirePolygon _poly;
@@ -16,12 +19,19 @@ namespace Primitives.Manipulators
             _mainWindowVM = mainWindowVm;
         }
 
+        /// <summary>
+        /// Binds manipulator to polygon
+        /// </summary>
+        /// <param name="source"></param>
         public override void Bind(ModelVisual3D source)
         {
             _poly = source as WirePolygon;
             UpdateGeometry();
         }
 
+        /// <summary>
+        /// Unbinds manipulator from polygon
+        /// </summary>
         public override void UnBind()
         {
             _poly = null;

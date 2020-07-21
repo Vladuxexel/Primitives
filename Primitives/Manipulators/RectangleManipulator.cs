@@ -7,6 +7,9 @@ using Primitives.Models;
 
 namespace Primitives.Manipulators
 {
+    /// <summary>
+    /// Class representing a polygon's manipulator
+    /// </summary>
     internal class RectangleManipulator : Manipulator
     {
         private WireRectangle _rect;
@@ -20,12 +23,19 @@ namespace Primitives.Manipulators
             _mainWindowVM = mainWindowVm;
         }
 
+        /// <summary>
+        /// Binds manipulator to rectangle
+        /// </summary>
+        /// <param name="source"></param>
         public override void Bind(ModelVisual3D source)
         {
             _rect = source as WireRectangle;
             UpdateGeometry();
         }
 
+        /// <summary>
+        /// Unbinds manipulator from rectangle
+        /// </summary>
         public override void UnBind()
         {
             _rect = null;

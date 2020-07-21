@@ -4,6 +4,9 @@ using System.Windows.Media.Media3D;
 
 namespace Primitives
 {
+    /// <summary>
+    /// Class representing base object
+    /// </summary>
     public abstract class BaseObject : LinesVisual3D
     {
         public List<Point3D> PointsList { get; set; } = new List<Point3D>();

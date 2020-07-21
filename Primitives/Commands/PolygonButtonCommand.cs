@@ -1,5 +1,8 @@
 ﻿namespace Primitives.Commands
 {
+    /// <summary>
+    /// Switching on/off drawing polygon
+    /// </summary>
     public class PolygonButtonCommand : TypedCommand<MainWindowVM>
     {
         protected override void Execute(MainWindowVM mainWindowVM)

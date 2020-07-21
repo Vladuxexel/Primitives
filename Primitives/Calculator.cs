@@ -51,6 +51,11 @@ namespace Primitives
             return GetDist(point1, point2) <= radius;
         }
 
+        /// <summary>
+        /// Returns center of polygon presented as list of it's points
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
         public static Point3D Centroid(List<Point3D> list)
         {
             var centroid = new Point3D(0, 0, 0);

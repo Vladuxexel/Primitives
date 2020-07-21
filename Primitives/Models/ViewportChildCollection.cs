@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace Primitives.Models
 {
+    /// <summary>
+    /// An adapter for viewport child collection
+    /// </summary>
     public class ViewportChildCollection : ObservableCollection<BaseObject>
     {
         private readonly HelixViewport3D _viewport;
@@ -23,6 +26,11 @@ namespace Primitives.Models
             }
         }
 
+        /// <summary>
+        /// Converting type to it's name
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private string GetName(string type)
         {
             switch (type)

@@ -5,8 +5,16 @@ using System.Windows.Media.Media3D;
 
 namespace Primitives.Commands
 {
+    /// <summary>
+    /// Drawing a figure
+    /// </summary>
     public class DrawCommand : TypedCommand<MainWindowVM>
     {
+        /// <summary>
+        /// Executes if there aren't selected figures and mouse isn't over existing object
+        /// </summary>
+        /// <param name="mainWindowVM"></param>
+        /// <returns></returns>
         protected override bool CanExecute(MainWindowVM mainWindowVM)
         {
             var can = true;

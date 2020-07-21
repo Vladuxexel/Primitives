@@ -1,5 +1,8 @@
 ﻿namespace Primitives.Commands
 {
+    /// <summary>
+    /// Switching on/off drawing rectangle
+    /// </summary>
     public class RectangleButtonCommand : TypedCommand<MainWindowVM>
     {
         protected override void Execute(MainWindowVM mainWindowVM)

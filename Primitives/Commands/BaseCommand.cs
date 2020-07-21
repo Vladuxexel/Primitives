@@ -3,6 +3,9 @@ using System.Windows.Input;
 
 namespace Primitives.Commands
 {
+    /// <summary>
+    /// Base command for using "Command" pattern
+    /// </summary>
     public abstract class BaseCommand : ICommand
     {
         /// <summary>

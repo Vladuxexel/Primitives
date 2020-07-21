@@ -16,20 +16,18 @@ namespace Primitives.Commands
 
             if (mainWindowVM.MainTreeView.SelectedItem is WireRectangle rect)
             {
-                Reset(mainWindowVM);
-                rect.IsSelected = true;
+                ResetTreeView(mainWindowVM);
                 rect.BindManipulator(mainWindowVM);
                 mainWindowVM.Props = rect.GetProps();
             }
             else if (mainWindowVM.MainTreeView.SelectedItem is WirePolygon poly)
             {
-                Reset(mainWindowVM);
-                poly.IsSelected = true;
+                ResetTreeView(mainWindowVM);
                 poly.BindManipulator(mainWindowVM);
                 mainWindowVM.Props = poly.GetProps();
             }
         }
-        private void Reset(MainWindowVM mainWindowVM)
+        private void ResetTreeView(MainWindowVM mainWindowVM)
         {
             foreach (var elem in mainWindowVM.viewport.Children.OfType<BaseObject>().ToList())
             {

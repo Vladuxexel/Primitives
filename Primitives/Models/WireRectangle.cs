@@ -167,7 +167,7 @@ namespace Primitives
             {
                 _isSelected = value;
                 SetSelectedColor();
-                //OnPropertyChanged("IsSelected");
+                OnPropertyChanged("IsSelected");
             }
         }
 
@@ -239,7 +239,6 @@ namespace Primitives
             };
             _manipulator.Bind(this);
             mainWindowVm.viewport.Children.Add(_manipulator);
-
         }
 
         public override void DeleteManipulator(MainWindowVM mainWindowVm)

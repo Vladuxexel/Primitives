@@ -1,18 +1,13 @@
-﻿using System;
+﻿using HelixToolkit.Wpf;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
 
 namespace Primitives
 {
     /// <summary>
     /// A class that represents math calculations
     /// </summary>
-    class Calculator
+    static class Calculator
     {
         /// <summary>
         /// Returns a distance from point1 to point2
@@ -53,29 +48,22 @@ namespace Primitives
         /// <returns></returns>
         public static bool IsInRadius(Point3D point1, Point3D point2, double radius)
         {
-            if (GetDist(point1, point2) <= radius)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return GetDist(point1, point2) <= radius;
         }
 
         public static Point3D Centroid(List<Point3D> list)
         {
-            Point3D centroid = new Point3D(0,0,0);
+            var centroid = new Point3D(0, 0, 0);
 
-            double signedArea = 0.0;
-            double x0 = 0.0; // Current vertex X
-            double y0 = 0.0; // Current vertex Y
-            double x1 = 0.0; // Next vertex X
-            double y1 = 0.0; // Next vertex Y
-            double a = 0.0;  // Partial signed area
+            var signedArea = 0.0;
+            var x0 = 0.0; // Current vertex X
+            var y0 = 0.0; // Current vertex Y
+            var x1 = 0.0; // Next vertex X
+            var y1 = 0.0; // Next vertex Y
+            var a = 0.0;  // Partial signed area
 
             // For all vertices except last
-            int i = 0;
+            var i = 0;
             for (i = 0; i < list.Count - 1; ++i)
             {
                 x0 = list[i].X;

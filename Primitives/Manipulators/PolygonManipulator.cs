@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using HelixToolkit.Wpf;
 using System.Windows.Input;
 using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
+using Primitives.Models;
 
-namespace Primitives
+namespace Primitives.Manipulators
 {
-    class PolygonManipulator : Manipulator
+    internal class PolygonManipulator : Manipulator
     {
         private WirePolygon _poly;
 
@@ -42,16 +36,12 @@ namespace Primitives
             if (_poly != null)
             {
                 var mesh = new MeshBuilder(false, false);
-                Point3D controlPoint = _poly.Center;
+                var controlPoint = _poly.Center;
                 mesh.AddEllipsoid(controlPoint, 0.2, 0.2, 0);
                 Model.Geometry = mesh.ToMesh();
             }
         }
 
-        public override void Updater()
-        {
-            UpdateGeometry();
-        }
         /// <summary>
         /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
@@ -71,9 +61,9 @@ namespace Primitives
             base.OnMouseMove(e);
             if (IsMouseCaptured)
             {
-                if (_mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue)
+                if (_mainWindowVM.Viewport.CursorOnConstructionPlanePosition.HasValue)
                 {
-                    var point = _mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
+                    var point = _mainWindowVM.Viewport.CursorOnConstructionPlanePosition.Value;
 
                     _poly.Center = point;
 

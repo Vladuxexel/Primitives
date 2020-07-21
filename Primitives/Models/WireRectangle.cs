@@ -1,20 +1,13 @@
-﻿using HelixToolkit.Wpf;
-using System;
-using System.Collections.Generic;
+﻿using Primitives.Manipulators;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using System.Windows.Shapes;
 using Color = System.Windows.Media.Color;
 
 namespace Primitives
 {
-    public class WireRectangle : BaseObject, INotifyPropertyChanged
+    public sealed class WireRectangle : BaseObject, INotifyPropertyChanged
     {
         private Point3D _p1, _p3;
         private bool _isSelected;
@@ -148,10 +141,7 @@ namespace Primitives
             }
         }
 
-        public override bool IsEndCreate
-        {
-            get => _isEndCreated;
-        }
+        public override bool IsEndCreate => _isEndCreated;
 
         public override void AddPoint(Point3D point)
         {
@@ -162,7 +152,7 @@ namespace Primitives
 
         public override bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set
             {
                 _isSelected = value;
@@ -182,51 +172,38 @@ namespace Primitives
 
         private double Length
         {
-            get
-            {
-                return Calculator.GetDist(_p1, new Point3D(_p3.X, _p1.Y, _p1.Z));
-            }
-            set { SetLength(value); }
+            get => Calculator.GetDist(_p1, new Point3D(_p3.X, _p1.Y, _p1.Z));
+            set => SetLength(value);
         }
         private double Width
         {
-            get
-            {
-                return Calculator.GetDist(_p1, new Point3D(_p1.X, _p3.Y, _p1.Z));
-            }
-            set { SetWidth(value); }
+            get => Calculator.GetDist(_p1, new Point3D(_p1.X, _p3.Y, _p1.Z));
+            set => SetWidth(value);
         }
 
         private void SetLength(double length)
         {
-            double delta = length - Length;
+            var delta = length - Length;
             _p3 = new Point3D(_p3.X + delta, _p3.Y, _p3.Z);
             UpdateLastPoint(_p3);
             UpdateManipulator();
         }
         private void SetWidth(double width)
         {
-            double delta = width - Width;
+            var delta = width - Width;
             _p3 = new Point3D(_p3.X, _p3.Y - delta, _p3.Z);
             UpdateLastPoint(_p3);
             UpdateManipulator();
         }
         private void SetSelectedColor()
         {
-            if (_isSelected)
-            {
-                _brush = Colors.Red;
-            }
-            else
-            {
-                _brush = Colors.Green;
-            }
-
+            _brush = _isSelected ? Colors.Red : Colors.Green;
             Color = _brush;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
+
+        private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -238,15 +215,15 @@ namespace Primitives
                 Color = Colors.Blue,
             };
             _manipulator.Bind(this);
-            mainWindowVm.viewport.Children.Add(_manipulator);
+            mainWindowVm.Viewport.Children.Add(_manipulator);
         }
 
         public override void DeleteManipulator(MainWindowVM mainWindowVm)
         {
-            if (_manipulator!=null)
+            if (_manipulator != null)
             {
                 _manipulator.UnBind();
-                mainWindowVm.viewport.Children.Remove(_manipulator);
+                mainWindowVm.Viewport.Children.Remove(_manipulator);
                 mainWindowVm.CurrentManipulator = null;
             }
         }

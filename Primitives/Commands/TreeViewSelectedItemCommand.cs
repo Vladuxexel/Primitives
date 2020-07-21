@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
+﻿using System.Linq;
 
 namespace Primitives.Commands
 {
@@ -29,7 +23,7 @@ namespace Primitives.Commands
         }
         private void ResetTreeView(MainWindowVM mainWindowVM)
         {
-            foreach (var elem in mainWindowVM.viewport.Children.OfType<BaseObject>().ToList())
+            foreach (var elem in mainWindowVM.Viewport.Children.OfType<BaseObject>().ToList())
             {
                 elem.DeleteManipulator(mainWindowVM);
             }

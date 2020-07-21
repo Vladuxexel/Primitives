@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
+using Primitives.Models;
 
-namespace Primitives
+namespace Primitives.Manipulators
 {
-    class RectangleManipulator : Manipulator
+    internal class RectangleManipulator : Manipulator
     {
         private WireRectangle _rect;
 
-        private Direction _currentDirection;
+        private Directions _currentDirection;
 
         private readonly MainWindowVM _mainWindowVM;
 
@@ -88,45 +84,45 @@ namespace Primitives
         {
             base.OnMouseDown(e);
 
-            var point = _mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
+            var point = _mainWindowVM.Viewport.CursorOnConstructionPlanePosition.Value;
 
             if (Calculator.IsInRadius(point, new Point3D(_rect.Left, _rect.Top, 0), 0.3))
             {
-                _currentDirection = Primitives.Direction.TopLeft;
+                _currentDirection = Directions.TopLeft;
             }
             else if (Calculator.IsInRadius(point, new Point3D(_rect.Right, _rect.Top, 0), 0.3))
             {
-                _currentDirection = Primitives.Direction.TopRight;
+                _currentDirection = Directions.TopRight;
             }
             else if (Calculator.IsInRadius(point, new Point3D(_rect.Right, _rect.Bottom, 0), 0.3))
             {
-                _currentDirection = Primitives.Direction.BottomRight;
+                _currentDirection = Directions.BottomRight;
             }
             else if (Calculator.IsInRadius(point, new Point3D(_rect.Left, _rect.Bottom, 0), 0.3))
             {
-                _currentDirection = Primitives.Direction.BottomLeft;
+                _currentDirection = Directions.BottomLeft;
             }
             else if (Math.Abs(point.Y - _rect.Top) <= 0.3)
             {
-                _currentDirection = Primitives.Direction.Top;
+                _currentDirection = Directions.Top;
             }
             else if (Math.Abs(point.X - _rect.Right) <= 0.3)
             {
-                _currentDirection = Primitives.Direction.Right;
+                _currentDirection = Directions.Right;
             }
             else if (Math.Abs(point.Y - _rect.Bottom) <= 0.3)
             {
-                _currentDirection = Primitives.Direction.Bottom;
+                _currentDirection = Directions.Bottom;
             }
             else if (Math.Abs(point.X - _rect.Left) <= 0.3)
             {
-                _currentDirection = Primitives.Direction.Left;
+                _currentDirection = Directions.Left;
             }
-            else if (Calculator.IsInRadius(point,_rect.Center,0.3))
+            else if (Calculator.IsInRadius(point, _rect.Center, 0.3))
             {
-                _currentDirection = Primitives.Direction.Center;
+                _currentDirection = Directions.Center;
             }
-            this.CaptureMouse();
+            CaptureMouse();
         }
 
         /// <summary>
@@ -136,47 +132,47 @@ namespace Primitives
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            if (this.IsMouseCaptured)
+            if (IsMouseCaptured)
             {
-                if (_mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue)
+                if (_mainWindowVM.Viewport.CursorOnConstructionPlanePosition.HasValue)
                 {
-                    var point = _mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
+                    var point = _mainWindowVM.Viewport.CursorOnConstructionPlanePosition.Value;
 
                     switch (_currentDirection)
                     {
-                        case Primitives.Direction.Top:
+                        case Directions.Top:
                             _rect.Top = point.Y;
                             break;
 
-                        case Primitives.Direction.Right:
+                        case Directions.Right:
                             _rect.Right = point.X;
                             break;
 
-                        case Primitives.Direction.Bottom:
+                        case Directions.Bottom:
                             _rect.Bottom = point.Y;
                             break;
 
-                        case Primitives.Direction.Left:
+                        case Directions.Left:
                             _rect.Left = point.X;
                             break;
 
-                        case Primitives.Direction.Center:
+                        case Directions.Center:
                             _rect.Center = point;
                             break;
 
-                        case Primitives.Direction.TopLeft:
+                        case Directions.TopLeft:
                             _rect.TopLeft = point;
                             break;
 
-                        case Primitives.Direction.TopRight:
+                        case Directions.TopRight:
                             _rect.TopRight = point;
                             break;
 
-                        case Primitives.Direction.BottomRight:
+                        case Directions.BottomRight:
                             _rect.BottomRight = point;
                             break;
 
-                        case Primitives.Direction.BottomLeft:
+                        case Directions.BottomLeft:
                             _rect.BottomLeft = point;
                             break;
                     }

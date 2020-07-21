@@ -1,13 +1,6 @@
 ﻿using HelixToolkit.Wpf;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Primitives.Commands
 {
@@ -15,11 +8,11 @@ namespace Primitives.Commands
     {
         protected override void Execute(MainWindowVM mainWindowVM)
         {
-            Point mousePos = Mouse.GetPosition(mainWindowVM.viewport);
+            var mousePos = Mouse.GetPosition(mainWindowVM.Viewport);
 
             mainWindowVM.tempCoordinates.Clear();
 
-            var result = mainWindowVM.viewport.Viewport.FindHits(mousePos);
+            var result = mainWindowVM.Viewport.Viewport.FindHits(mousePos);
 
             if (result.Any())
             {
@@ -34,7 +27,7 @@ namespace Primitives.Commands
             }
             else
             {
-                foreach (var elem in mainWindowVM.viewport.Children.OfType<BaseObject>().ToList())
+                foreach (var elem in mainWindowVM.Viewport.Children.OfType<BaseObject>().ToList())
                 {
                     elem.IsSelected = false;
                     elem.DeleteManipulator(mainWindowVM);

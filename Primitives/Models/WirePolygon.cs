@@ -1,15 +1,10 @@
-﻿using HelixToolkit.Wpf;
-using System;
+﻿using Primitives.Manipulators;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using SharpDX;
 using Color = System.Windows.Media.Color;
 
 namespace Primitives
@@ -17,7 +12,7 @@ namespace Primitives
     /// <summary>
     /// Class representing a wire polygon object
     /// </summary>
-    public class WirePolygon : BaseObject, INotifyPropertyChanged
+    public sealed class WirePolygon : BaseObject, INotifyPropertyChanged
     {
         private bool _isSelected;
         private Color _brush = Colors.Green;
@@ -85,10 +80,7 @@ namespace Primitives
 
         public Point3D Center
         {
-            get
-            {
-                return Calculator.Centroid(PointsList);
-            }
+            get => Calculator.Centroid(PointsList);
             set
             {
                 var deltaX = Calculator.Centroid(PointsList).X - value.X;
@@ -125,7 +117,7 @@ namespace Primitives
         /// </summary>
         public override bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set
             {
                 _isSelected = value;
@@ -146,29 +138,20 @@ namespace Primitives
             };
         }
 
-        private double Perimeter
-        {
-            get { return Calculator.GetPerimeter(PointsList); }
-        }
+        private double Perimeter => Calculator.GetPerimeter(PointsList);
 
         /// <summary>
         /// Sets color of selected object
         /// </summary>
         private void SetSelectedColor()
         {
-            if (_isSelected)
-            {
-                _brush = Colors.Red;
-            }
-            else
-            {
-                _brush = Colors.Green;
-            }
+            _brush = _isSelected ? Colors.Red : Colors.Green;
             Color = _brush;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
+
+        private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -180,7 +163,7 @@ namespace Primitives
                 Color = Colors.Blue,
             };
             _manipulator.Bind(this);
-            mainWindowVm.viewport.Children.Add(_manipulator);
+            mainWindowVm.Viewport.Children.Add(_manipulator);
         }
 
         public override void DeleteManipulator(MainWindowVM mainWindowVm)
@@ -188,7 +171,7 @@ namespace Primitives
             if (_manipulator != null)
             {
                 _manipulator.UnBind();
-                mainWindowVm.viewport.Children.Remove(_manipulator);
+                mainWindowVm.Viewport.Children.Remove(_manipulator);
                 mainWindowVm.CurrentManipulator = null;
             }
         }

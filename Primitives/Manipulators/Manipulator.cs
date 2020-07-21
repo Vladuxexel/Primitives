@@ -1,12 +1,12 @@
-﻿using System.Windows;
+﻿using HelixToolkit.Wpf;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
 
-namespace Primitives
+namespace Primitives.Manipulators
 {
     /// <summary>
     ///   Provides an abstract base class for manipulators.
@@ -75,10 +75,10 @@ namespace Primitives
         /// </summary>
         protected Manipulator()
         {
-            this.Model = new GeometryModel3D();
-            BindingOperations.SetBinding(this.Model, GeometryModel3D.MaterialProperty, new Binding("Material") { Source = this });
-            BindingOperations.SetBinding(this.Model, GeometryModel3D.BackMaterialProperty, new Binding("BackMaterial") { Source = this });
-            this.Visual3DModel = this.Model;
+            Model = new GeometryModel3D();
+            BindingOperations.SetBinding(Model, GeometryModel3D.MaterialProperty, new Binding("Material") { Source = this });
+            BindingOperations.SetBinding(Model, GeometryModel3D.BackMaterialProperty, new Binding("BackMaterial") { Source = this });
+            Visual3DModel = Model;
         }
 
         /// <summary>
@@ -87,67 +87,49 @@ namespace Primitives
         /// <value> The color. </value>
         public Color Color
         {
-            get
-            {
-                return (Color)this.GetValue(ColorProperty);
-            }
+            get => (Color)GetValue(ColorProperty);
 
-            set
-            {
-                this.SetValue(ColorProperty, value);
-            }
+            set => SetValue(ColorProperty, value);
         }
 
         /// <summary>
         /// Gets or sets the material of the manipulator.
         /// </summary>
-        public Material Material
+        private Material Material
         {
-            get { return (Material)this.GetValue(MaterialProperty); }
-            set { this.SetValue(MaterialProperty, value); }
+            get => (Material)GetValue(MaterialProperty);
+            set => SetValue(MaterialProperty, value);
         }
 
         /// <summary>
         /// Gets or sets the back material of the manipulator.
         /// </summary>
-        public Material BackMaterial
+        private Material BackMaterial
         {
-            get { return (Material)this.GetValue(BackMaterialProperty); }
-            set { this.SetValue(BackMaterialProperty, value); }
+            get => (Material)GetValue(BackMaterialProperty);
+            set => SetValue(BackMaterialProperty, value);
         }
 
         /// <summary>
         ///   Gets or sets the offset of the visual (this vector is added to the Position point).
         /// </summary>
         /// <value> The offset. </value>
-        public Vector3D Offset
+        private Vector3D Offset
         {
-            get
-            {
-                return (Vector3D)this.GetValue(OffsetProperty);
-            }
+            get => (Vector3D)GetValue(OffsetProperty);
 
-            set
-            {
-                this.SetValue(OffsetProperty, value);
-            }
+            set => SetValue(OffsetProperty, value);
         }
 
         /// <summary>
         ///   Gets or sets the position of the manipulator.
         /// </summary>
         /// <value> The position. </value>
-        public Point3D Position
+        private Point3D Position
         {
-            get
-            {
-                return (Point3D)this.GetValue(PositionProperty);
-            }
+            get => (Point3D)GetValue(PositionProperty);
 
-            set
-            {
-                this.SetValue(PositionProperty, value);
-            }
+            set => SetValue(PositionProperty, value);
         }
 
         /// <summary>
@@ -155,15 +137,9 @@ namespace Primitives
         /// </summary>
         public Transform3D TargetTransform
         {
-            get
-            {
-                return (Transform3D)this.GetValue(TargetTransformProperty);
-            }
+            get => (Transform3D)GetValue(TargetTransformProperty);
 
-            set
-            {
-                this.SetValue(TargetTransformProperty, value);
-            }
+            set => SetValue(TargetTransformProperty, value);
         }
 
         /// <summary>
@@ -172,26 +148,20 @@ namespace Primitives
         /// <value> The value. </value>
         public double Value
         {
-            get
-            {
-                return (double)this.GetValue(ValueProperty);
-            }
+            get => (double)GetValue(ValueProperty);
 
-            set
-            {
-                this.SetValue(ValueProperty, value);
-            }
+            set => SetValue(ValueProperty, value);
         }
 
         /// <summary>
         ///   Gets or sets the camera.
         /// </summary>
-        protected ProjectionCamera Camera { get; set; }
+        private ProjectionCamera Camera { get; set; }
 
         /// <summary>
         ///   Gets or sets the hit plane normal.
         /// </summary>
-        protected Vector3D HitPlaneNormal { get; set; }
+        private Vector3D HitPlaneNormal { get; set; }
 
         /// <summary>
         ///   Gets or sets the model.
@@ -201,7 +171,7 @@ namespace Primitives
         /// <summary>
         ///   Gets or sets the parent viewport.
         /// </summary>
-        protected Viewport3D ParentViewport { get; set; }
+        private Viewport3D ParentViewport { get; set; }
 
         /// <summary>
         /// Binds this manipulator to a given Visual3D.
@@ -238,8 +208,6 @@ namespace Primitives
             ((Manipulator)d).UpdateGeometry();
         }
 
-        public virtual void Updater() { }
-
         /// <summary>
         /// Projects the point on the hit plane.
         /// </summary>
@@ -257,7 +225,7 @@ namespace Primitives
         /// </returns>
         protected virtual Point3D? GetHitPlanePoint(Point p, Point3D hitPlaneOrigin, Vector3D hitPlaneNormal)
         {
-            return Viewport3DHelper.UnProject(this.ParentViewport, p, hitPlaneOrigin, hitPlaneNormal);
+            return ParentViewport.UnProject(p, hitPlaneOrigin, hitPlaneNormal);
         }
 
         /// <summary>
@@ -272,15 +240,15 @@ namespace Primitives
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            this.ParentViewport = Visual3DHelper.GetViewport3D(this);
-            this.Camera = this.ParentViewport.Camera as ProjectionCamera;
-            var projectionCamera = this.Camera;
+            ParentViewport = this.GetViewport3D();
+            Camera = ParentViewport.Camera as ProjectionCamera;
+            var projectionCamera = Camera;
             if (projectionCamera != null)
             {
-                this.HitPlaneNormal = projectionCamera.LookDirection;
+                HitPlaneNormal = projectionCamera.LookDirection;
             }
 
-            this.CaptureMouse();
+            CaptureMouse();
         }
 
         /// <summary>
@@ -290,7 +258,7 @@ namespace Primitives
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
-            this.ReleaseMouseCapture();
+            ReleaseMouseCapture();
         }
 
         /// <summary>
@@ -299,17 +267,15 @@ namespace Primitives
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
         protected virtual void PositionChanged(DependencyPropertyChangedEventArgs e)
         {
-            this.Transform = new TranslateTransform3D(
-                this.Position.X + this.Offset.X, this.Position.Y + this.Offset.Y, this.Position.Z + this.Offset.Z);
+            Transform = new TranslateTransform3D(
+                Position.X + Offset.X, Position.Y + Offset.Y, Position.Z + Offset.Z);
         }
 
         /// <summary>
         /// Handles changes in the Value property.
         /// </summary>
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-        protected virtual void ValueChanged(DependencyPropertyChangedEventArgs e)
-        {
-        }
+        protected virtual void ValueChanged(DependencyPropertyChangedEventArgs e) { }
 
         /// <summary>
         /// Transforms from world to local coordinates.
@@ -322,7 +288,7 @@ namespace Primitives
         /// </returns>
         protected Point3D ToLocal(Point3D worldPoint)
         {
-            var mat = Visual3DHelper.GetTransform(this);
+            var mat = this.GetTransform();
             mat.Invert();
             var t = new MatrixTransform3D(mat);
             return t.Transform(worldPoint);
@@ -339,7 +305,7 @@ namespace Primitives
         /// </returns>
         protected Point3D ToWorld(Point3D point)
         {
-            var mat = Visual3DHelper.GetTransform(this);
+            var mat = this.GetTransform();
             var t = new MatrixTransform3D(mat);
             return t.Transform(point);
         }
@@ -355,7 +321,7 @@ namespace Primitives
         /// </returns>
         protected Vector3D ToWorld(Vector3D vector)
         {
-            var mat = Visual3DHelper.GetTransform(this);
+            var mat = this.GetTransform();
             var t = new MatrixTransform3D(mat);
             return t.Transform(vector);
         }
@@ -365,8 +331,8 @@ namespace Primitives
         /// </summary>
         private void ColorChanged()
         {
-            this.Material = MaterialHelper.CreateMaterial(this.Color);
-            this.BackMaterial = this.Material;
+            Material = MaterialHelper.CreateMaterial(Color);
+            BackMaterial = Material;
         }
     }
 }

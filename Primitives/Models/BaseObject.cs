@@ -1,11 +1,6 @@
-﻿using System;
+﻿using HelixToolkit.Wpf;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
 
 namespace Primitives
 {
@@ -14,7 +9,7 @@ namespace Primitives
         public List<Point3D> PointsList { get; set; } = new List<Point3D>();
 
         public string Name { get; set; }
-        public Types Type { get; set; }
+        protected Types Type { get; set; }
 
         public virtual void AddPoint(Point3D point)
         {

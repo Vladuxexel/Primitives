@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HelixToolkit.Wpf;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using HelixToolkit.Wpf;
 
-namespace Primitives
+namespace Primitives.Commands
 {
     public class DrawCommand : TypedCommand<MainWindowVM>
     {
         protected override bool CanExecute(MainWindowVM mainWindowVM)
         {
-            bool can = true;
+            var can = true;
 
-            Point mousePos = Mouse.GetPosition(mainWindowVM.viewport);
+            var mousePos = Mouse.GetPosition(mainWindowVM.Viewport);
 
-            var result = mainWindowVM.viewport.Viewport.FindHits(mousePos);
+            var result = mainWindowVM.Viewport.Viewport.FindHits(mousePos);
 
-            foreach (var elem in mainWindowVM.viewport.Children.OfType<BaseObject>())
+            foreach (var elem in mainWindowVM.Viewport.Children.OfType<BaseObject>())
             {
                 if (elem.IsSelected)
                 {
@@ -31,36 +25,23 @@ namespace Primitives
 
             if (result.Any())
             {
-                if (result.First().Visual is WireRectangle rect)
+                switch (result.First().Visual)
                 {
-                    if (mainWindowVM.CurrentObject is WireRectangle curRect)
-                    {
-                        can = true;
-                    }
-                    else
-                    {
-                        can = false;
-                    }
-                }
-                else if (result.First().Visual is WirePolygon poly)
-                {
-                    if (mainWindowVM.CurrentObject is WirePolygon curPoly)
-                    {
-                        can = true;
-                    }
-                    else
-                    {
-                        can = false;
-                    }
+                    case WireRectangle _:
+                        can = mainWindowVM.CurrentObject is WireRectangle;
+                        break;
+                    case WirePolygon _:
+                        can = mainWindowVM.CurrentObject is WirePolygon;
+                        break;
                 }
             }
 
-            return can && mainWindowVM.viewport.CursorOnConstructionPlanePosition.HasValue;
+            return can && mainWindowVM.Viewport.CursorOnConstructionPlanePosition.HasValue;
         }
 
         protected override void Execute(MainWindowVM mainWindowVM)
         {
-            Point3D point = mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
+            var point = mainWindowVM.Viewport.CursorOnConstructionPlanePosition.Value;
 
             if (mainWindowVM.NearestPoint != null)
             {
@@ -70,13 +51,13 @@ namespace Primitives
 
             if (mainWindowVM.CurrentObject == null)
             {
-                if (mainWindowVM.isRectangle)
+                if (mainWindowVM.IsRectangle)
                 {
                     mainWindowVM.CurrentObject = new WireRectangle(point);
                     mainWindowVM.CurrentObject.UpdateLastPoint(point);
                     mainWindowVM.Collection.Add(mainWindowVM.CurrentObject);
                 }
-                else if (mainWindowVM.isPolygon)
+                else if (mainWindowVM.IsPolygon)
                 {
                     mainWindowVM.CurrentObject = new WirePolygon(point);
                     mainWindowVM.CurrentObject.UpdateLastPoint(point);
@@ -86,6 +67,7 @@ namespace Primitives
             else
             {
                 mainWindowVM.CurrentObject.AddPoint(point);
+
                 if (mainWindowVM.CurrentObject.IsEndCreate)
                 {
                     mainWindowVM.CurrentObject = null;

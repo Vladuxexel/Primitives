@@ -1,39 +1,24 @@
-﻿using System;
+﻿using HelixToolkit.Wpf;
+using Primitives.Commands;
+using Primitives.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows;
-using SharpDX;
-using HelixToolkit.Wpf;
-using System.Windows.Media.Media3D;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows.Controls;
-using System.Windows.Threading;
-using Microsoft.CSharp.RuntimeBinder;
-using Primitives.Commands;
-using Primitives.Models;
-using Color = SharpDX.Color;
-using SelectionCommand = HelixToolkit.Wpf.SelectionCommand;
+using System.Windows.Input;
+using System.Windows.Media.Media3D;
 
 namespace Primitives
 {
     public class MainWindowVM : BaseViewModel
     {
-        public bool isRectangle = false;
-        public bool isPolygon = false;
+        public bool IsRectangle = false;
+        public bool IsPolygon = false;
 
         public bool IsBindable = true;
         public Point3D? NearestPoint;
 
-        public readonly HelixViewport3D viewport;
+        public readonly HelixViewport3D Viewport;
 
         public readonly List<Point3D> tempCoordinates = new List<Point3D>();
 
@@ -58,7 +43,7 @@ namespace Primitives
             TreeViewSelectedItemCommand = new TreeViewSelectedItemCommand();
             DeletingCommand = new DeletingCommand();
             BindableChangedCommand = new BindableChangedCommand();
-            this.viewport = viewport;
+            Viewport = viewport;
             MainTreeView = treeView;
             var rect = new WireRectangle(new Point3D(-18, 10, 0));
             rect.AddPoint(new Point3D(-5, 2, 0));
@@ -71,20 +56,20 @@ namespace Primitives
             var poly = new WirePolygon(tempCoordinates);
             Collection.Add(poly);
             tempCoordinates.Clear();
-            this.viewport.MouseMove += ViewportOnMouseMove;
+            Viewport.MouseMove += ViewportOnMouseMove;
         }
 
         private void ViewportOnMouseMove(object sender, MouseEventArgs e)
         {
-            if (viewport.CursorOnConstructionPlanePosition.HasValue && CurrentObject != null)
+            if (Viewport.CursorOnConstructionPlanePosition.HasValue && CurrentObject != null)
             {
-                var point = viewport.CursorOnConstructionPlanePosition.Value;
+                var point = Viewport.CursorOnConstructionPlanePosition.Value;
                 CurrentObject.UpdateLastPoint(point);
             }
 
-            if (IsBindable && CurrentObject == null && viewport.CursorOnConstructionPlanePosition.HasValue)
+            if (IsBindable && CurrentObject == null && Viewport.CursorOnConstructionPlanePosition.HasValue)
             {
-                var point = viewport.CursorOnConstructionPlanePosition.Value;
+                var point = Viewport.CursorOnConstructionPlanePosition.Value;
                 Binder(point, 0.5);
             }
         }
@@ -97,21 +82,22 @@ namespace Primitives
 
             NearestPoint = null;
 
-            foreach (var figure in viewport.Children.OfType<BaseObject>().ToList())
+            foreach (var figure in Viewport.Children.OfType<BaseObject>().ToList())
             {
-                if (figure is WireRectangle rect)
+                switch (figure)
                 {
-                    points.Add(rect.TopLeft);
-                    points.Add(rect.TopRight);
-                    points.Add(rect.BottomRight);
-                    points.Add(rect.BottomLeft);
-                }
-                else if (figure is WirePolygon poly)
-                {
-                    foreach (var point in poly.PointsList)
-                    {
-                        points.Add(point);
-                    }
+                    case WireRectangle rect:
+                        points.Add(rect.TopLeft);
+                        points.Add(rect.TopRight);
+                        points.Add(rect.BottomRight);
+                        points.Add(rect.BottomLeft);
+                        break;
+                    case WirePolygon poly:
+                        foreach (var point in poly.PointsList)
+                        {
+                            points.Add(point);
+                        }
+                        break;
                 }
             }
 
@@ -160,7 +146,7 @@ namespace Primitives
         Rectangle,
         Polygon
     }
-    public enum Direction
+    public enum Directions
     {
         Top,
         Bottom,

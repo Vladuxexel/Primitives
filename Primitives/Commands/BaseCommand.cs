@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Primitives
+namespace Primitives.Commands
 {
     public abstract class BaseCommand : ICommand
     {

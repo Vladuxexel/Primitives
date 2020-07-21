@@ -10,7 +10,7 @@
         xmlns:models="clr-namespace:Primitives.Models"
         xmlns:primitives="clr-namespace:Primitives"
         mc:Ignorable="d"
-        Title="MainWindow" WindowState="Maximized">
+        Title="HelixToolkit рисование примитивов" WindowState="Maximized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*"/>

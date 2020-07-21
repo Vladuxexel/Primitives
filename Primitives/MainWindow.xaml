@@ -17,6 +17,11 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TreeView x:Name="TreeView" Grid.Column="0" ItemsSource="{Binding Tree}">
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Удалить" Command="{Binding DeletingCommand}" CommandParameter="{Binding}"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
                     <i:InvokeCommandAction Command="{Binding TreeViewSelectedItemCommand}" CommandParameter="{Binding}"/>
@@ -36,7 +41,13 @@
                     <Label Content="{Binding Type}"/>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type local:BaseObject}">
-                    <Label Content="{Binding Name}"/>
+                    <Label Content="{Binding Name}">
+                        <!--<Label.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Удалить" Command="{Binding DeletingCommand}" CommandParameter="{Binding}"/>
+                            </ContextMenu>
+                        </Label.ContextMenu>-->
+                    </Label>
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>

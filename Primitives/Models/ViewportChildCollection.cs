@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using HelixToolkit.Wpf;
 
 namespace Primitives.Models
@@ -52,16 +53,12 @@ namespace Primitives.Models
             _viewport.Children.Add(item);
             base.InsertItem(index, item);
             OnPropertyChanged(new PropertyChangedEventArgs("ConvertedData"));
-
         }
 
         protected override void RemoveItem(int index)
         {
-            _viewport.Children.RemoveAt(index);
             base.RemoveItem(index);
             OnPropertyChanged(new PropertyChangedEventArgs("ConvertedData"));
         }
-
-
     }
 }

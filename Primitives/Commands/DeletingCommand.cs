@@ -9,9 +9,20 @@ namespace Primitives.Commands
 {
     public class DeletingCommand : TypedCommand<MainWindowVM>
     {
-        protected override void Execute(MainWindowVM parameter)
+        protected override bool CanExecute(MainWindowVM mainWindowVM)
         {
-            MessageBox.Show("Delete");
+            return mainWindowVM.MainTreeView.SelectedItem is BaseObject figure;
+        }
+
+        protected override void Execute(MainWindowVM mainWindowVM)
+        {
+            if (mainWindowVM.MainTreeView.SelectedItem is BaseObject figure)
+            {
+                figure.DeleteManipulator(mainWindowVM);
+                mainWindowVM.Collection.Remove(figure);
+                mainWindowVM.viewport.Children.Remove(figure);
+                mainWindowVM.Props = null;
+            }
         }
     }
 }

@@ -41,13 +41,7 @@
                     <Label Content="{Binding Type}"/>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type local:BaseObject}">
-                    <Label Content="{Binding Name}">
-                        <!--<Label.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Удалить" Command="{Binding DeletingCommand}" CommandParameter="{Binding}"/>
-                            </ContextMenu>
-                        </Label.ContextMenu>-->
-                    </Label>
+                    <Label Content="{Binding Name}"/>
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>
@@ -67,7 +61,7 @@
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" Margin="3 3 3 3" Background="AntiqueWhite">
                 <Button Margin="3" Command="{Binding RectangleButtonCommand}" CommandParameter="{Binding}" Content="Rectangle" />
                 <Button Margin="3" Command="{Binding PolygonButtonCommand}" CommandParameter="{Binding}" Content="Polygon"/>
-                <CheckBox x:Name="IsBindable" Content="Привязка к точкам" IsChecked="True"/>
+                <Button Margin="3" Command="{Binding  BindableChangedCommand}" CommandParameter="{Binding}" Content="On/off binding"/>
             </StackPanel>
             <DataGrid Grid.Row="1" Grid.Column="4" ItemsSource="{Binding Props}" VerticalAlignment="Top" Margin="99,3,3,0" Grid.ColumnSpan="2" AutoGenerateColumns="False">
                 <DataGrid.Columns>

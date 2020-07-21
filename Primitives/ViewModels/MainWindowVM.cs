@@ -17,6 +17,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Microsoft.CSharp.RuntimeBinder;
 using Primitives.Commands;
 using Primitives.Models;
 using Color = SharpDX.Color;
@@ -28,6 +29,9 @@ namespace Primitives
     {
         public bool isRectangle = false;
         public bool isPolygon = false;
+
+        public bool IsBindable = true;
+        public Point3D? NearestPoint;
 
         public readonly HelixViewport3D viewport;
 
@@ -53,6 +57,7 @@ namespace Primitives
             SelectingCommand = new SelectingCommand();
             TreeViewSelectedItemCommand = new TreeViewSelectedItemCommand();
             DeletingCommand = new DeletingCommand();
+            BindableChangedCommand = new BindableChangedCommand();
             this.viewport = viewport;
             MainTreeView = treeView;
             var rect = new WireRectangle(new Point3D(-18, 10, 0));
@@ -76,6 +81,56 @@ namespace Primitives
                 var point = viewport.CursorOnConstructionPlanePosition.Value;
                 CurrentObject.UpdateLastPoint(point);
             }
+
+            if (IsBindable && CurrentObject == null && viewport.CursorOnConstructionPlanePosition.HasValue)
+            {
+                var point = viewport.CursorOnConstructionPlanePosition.Value;
+                Binder(point, 0.5);
+            }
+        }
+
+        private void Binder(Point3D mousePos, double radius)
+        {
+            var inRadiusPoints = new List<Point3D>();
+            var points = new List<Point3D>();
+            var minDist = radius;
+
+            NearestPoint = null;
+
+            foreach (var figure in viewport.Children.OfType<BaseObject>().ToList())
+            {
+                if (figure is WireRectangle rect)
+                {
+                    points.Add(rect.TopLeft);
+                    points.Add(rect.TopRight);
+                    points.Add(rect.BottomRight);
+                    points.Add(rect.BottomLeft);
+                }
+                else if (figure is WirePolygon poly)
+                {
+                    foreach (var point in poly.PointsList)
+                    {
+                        points.Add(point);
+                    }
+                }
+            }
+
+            foreach (var point in points)
+            {
+                if (Calculator.IsInRadius(mousePos, point, radius))
+                {
+                    inRadiusPoints.Add(point);
+                }
+            }
+
+            foreach (var point in inRadiusPoints)
+            {
+                if (Calculator.GetDist(mousePos, point) < minDist)
+                {
+                    minDist = Calculator.GetDist(mousePos, point);
+                    NearestPoint = point;
+                }
+            }
         }
 
         private ObservableCollection<ViewPropsVM> _props = new ObservableCollection<ViewPropsVM>();
@@ -97,6 +152,7 @@ namespace Primitives
         public SelectingCommand SelectingCommand { get; }
         public TreeViewSelectedItemCommand TreeViewSelectedItemCommand { get; }
         public DeletingCommand DeletingCommand { get; }
+        public BindableChangedCommand BindableChangedCommand { get; }
         #endregion
     }
     public enum Types

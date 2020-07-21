@@ -60,7 +60,14 @@ namespace Primitives
 
         protected override void Execute(MainWindowVM mainWindowVM)
         {
-            var point = mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
+            Point3D point = mainWindowVM.viewport.CursorOnConstructionPlanePosition.Value;
+
+            if (mainWindowVM.NearestPoint != null)
+            {
+                point = (Point3D)mainWindowVM.NearestPoint;
+                mainWindowVM.NearestPoint = null;
+            }
+
             if (mainWindowVM.CurrentObject == null)
             {
                 if (mainWindowVM.isRectangle)
@@ -71,9 +78,9 @@ namespace Primitives
                 }
                 else if (mainWindowVM.isPolygon)
                 {
-                   mainWindowVM.CurrentObject = new WirePolygon(point);
-                   mainWindowVM.CurrentObject.UpdateLastPoint(point);
-                   mainWindowVM.Collection.Add(mainWindowVM.CurrentObject);
+                    mainWindowVM.CurrentObject = new WirePolygon(point);
+                    mainWindowVM.CurrentObject.UpdateLastPoint(point);
+                    mainWindowVM.Collection.Add(mainWindowVM.CurrentObject);
                 }
             }
             else
